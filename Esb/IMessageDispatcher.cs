@@ -1,6 +1,4 @@
-﻿using Esb.Transport;
-
-namespace Esb
+﻿namespace Esb
 {
     public interface IMessageDispatcher
     {

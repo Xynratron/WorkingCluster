@@ -1,7 +1,4 @@
-﻿using System.Linq;
-using System.Text;
-
-namespace Esb
+﻿namespace Esb
 {
     public interface IProcessorConfiguration
     {

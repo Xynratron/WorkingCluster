@@ -1,14 +1,11 @@
-﻿using NUnit.Framework;
+﻿using System;
 using Esb.Transport;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using NUnit.Framework;
 using Telerik.JustMock;
 using Telerik.JustMock.Helpers;
 using MyRouter = Esb.Transport.Router;
 
-namespace Esb.Transport.Tests
+namespace Esb.Tests.Transport
 {
     [TestFixture()]
     public class MyRouterTests

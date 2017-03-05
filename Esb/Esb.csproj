@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ClusterConfiguration.cs" />
     <Compile Include="IClusterConfiguration.cs" />
     <Compile Include="INodeConfiguration.cs" />
     <Compile Include="IProcessorConfiguration.cs" />
@@ -53,7 +54,6 @@
     <Compile Include="Priority.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Transport\Router.cs" />
-    <Compile Include="System.cs" />
     <Compile Include="Transport\SelectRandomNodeRoutingStrategy.cs" />
   </ItemGroup>
   <ItemGroup>

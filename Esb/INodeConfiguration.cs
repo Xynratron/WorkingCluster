@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Net;
-
 namespace Esb
 {
     public interface INodeConfiguration

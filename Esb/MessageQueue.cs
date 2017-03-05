@@ -6,7 +6,7 @@ namespace Esb
 {
     public class MessageQueue : IMessageQueue
     {
-        List<Envelope> _list = new List<Envelope>();
+        private readonly List<Envelope> _list = new List<Envelope>();
         public void Add(Envelope message)
         {
             lock (_list)
