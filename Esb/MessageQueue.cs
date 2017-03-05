@@ -11,7 +11,18 @@ namespace Esb
         {
             lock (_list)
             {
-                _list.Add(message);
+                lock (_suspendMessages)
+                {
+                    var messageType = message.MessageType;
+                    if (_suspendMessages.ContainsKey(messageType))
+                    {
+                        _suspendMessages[messageType].Add(message);
+                    }
+                    else
+                    {
+                        _list.Add(message);
+                    }
+                }
             }
         }
 
@@ -21,7 +32,7 @@ namespace Esb
             {
                 lock (_list)
                 {
-                    foreach (var envelope in _list)
+                    foreach (var envelope in _list.OrderByDescending(o => o.Priority).ThenBy(o => o.CreatedOn))
                     {
                         yield return envelope;
                     }
