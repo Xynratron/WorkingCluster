@@ -6,11 +6,12 @@ using System.Linq;
 using System.Text;
 using Telerik.JustMock;
 using Telerik.JustMock.Helpers;
+using MyRouter = Esb.Transport.Router;
 
 namespace Esb.Transport.Tests
 {
     [TestFixture()]
-    public class RouterTests
+    public class MyRouterTests
     {
         public class TestMessage { }
 
@@ -24,7 +25,7 @@ namespace Esb.Transport.Tests
 
             var clusterConfig = ClusterConfiguration(message, true, false);
 
-            var router = new Router(null, messageQueue, clusterConfig, null, null);
+            var router = new MyRouter(null, messageQueue, clusterConfig, null, null);
             router.Process(message);
 
             messageQueue.Assert();
@@ -41,7 +42,7 @@ namespace Esb.Transport.Tests
             
             var clusterConfig = ClusterConfiguration(message, false, false);
 
-            var router = new Router(null, null, clusterConfig, sender, null);
+            var router = new MyRouter(null, null, clusterConfig, sender, null);
             router.Process(message);
 
             sender.Assert();
@@ -60,7 +61,7 @@ namespace Esb.Transport.Tests
 
             var clusterConfig = ClusterConfiguration(message, false, true, node1, node2);
 
-            var router = new Router(null, null, clusterConfig, sender, null);
+            var router = new MyRouter(null, null, clusterConfig, sender, null);
             router.Process(message);
 
             sender.Assert();
@@ -93,7 +94,7 @@ namespace Esb.Transport.Tests
 
             var clusterConfig = ClusterConfiguration(message, true, true, localNode, node1, node2);
 
-            var router = new Router(null, messageQueue, clusterConfig, sender, null);
+            var router = new MyRouter(null, messageQueue, clusterConfig, sender, null);
             router.Process(message);
 
             sender.Assert();
@@ -117,7 +118,7 @@ namespace Esb.Transport.Tests
             var routingStrategy = Mock.Create<INodeRoutingStrategy>();
             routingStrategy.Arrange(o => o.SelectNode(new[] {node1, node2})).Returns(node2);
 
-            var router = new Router(null, null, clusterConfig, sender, routingStrategy);
+            var router = new MyRouter(null, null, clusterConfig, sender, routingStrategy);
             router.Process(message);
 
             sender.Assert();
