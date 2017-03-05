@@ -39,12 +39,15 @@ namespace Esb.Transport
 
         private bool ProcessSingleSeverMessage(Envelope message)
         {
-            if (ClusterConfiguration.IsMultiProcessable(message))
+            if (!ClusterConfiguration.IsMultiProcessable(message))
+            {
                 if (ClusterConfiguration.HasLocalProcessing(message))
                     MessageQueue.Add(message);
                 else
-                    Sender.Send(message, RoutingStrategy.SelectNode(ClusterConfiguration.GetClusterNodesForMessage(message)));
-            return true;
+                    Sender.Send(message);
+                return true;
+            }
+            return false;
         }
 
         public IReceiver Receiver { get; }
