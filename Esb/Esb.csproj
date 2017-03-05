@@ -55,7 +55,7 @@
     <Compile Include="System.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Graph1.dgml">
+    <None Include="Overview.dgml">
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>

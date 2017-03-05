@@ -5,13 +5,13 @@
     <Node Id="(@1 Namespace=Esb.Transport Type=ISender)" Category="CodeSchema_Interface" Bounds="-46.7183333333334,-183.52,81.15,26" CodeSchemaProperty_IsAbstract="True" CodeSchemaProperty_IsPublic="True" CommonLabel="ISender" Icon="Microsoft.VisualStudio.Interface.Public" Label="ISender" SourceLocation="(Assembly=file:///D:/Daten/Programmieren/Temp/Esb/Esb/ISender.cs StartLineNumber=5 StartCharacterOffset=21 EndLineNumber=5 EndCharacterOffset=28)" UseManualLocation="True" />
     <Node Id="@2" Category="CodeSchema_Interface" Bounds="-401.075171813965,-182.942091321146,88.22,26" CodeSchemaProperty_IsAbstract="True" CodeSchemaProperty_IsPublic="True" CommonLabel="IReceiver" Icon="Microsoft.VisualStudio.Interface.Public" Label="IReceiver" SourceLocation="(Assembly=file:///D:/Daten/Programmieren/Temp/Esb/Esb/IReceiver.cs StartLineNumber=7 StartCharacterOffset=21 EndLineNumber=7 EndCharacterOffset=30)" UseManualLocation="True" />
     <Node Id="@3" Category="CodeSchema_Interface" Bounds="-221.718333333333,-183.52,79.3566666666667,26" CodeSchemaProperty_IsAbstract="True" CodeSchemaProperty_IsPublic="True" CommonLabel="IRouter" Icon="Microsoft.VisualStudio.Interface.Public" Label="IRouter" SourceLocation="(Assembly=file:///D:/Daten/Programmieren/Temp/Esb/Esb/IRouter.cs StartLineNumber=4 StartCharacterOffset=21 EndLineNumber=4 EndCharacterOffset=28)" UseManualLocation="True" />
-    <Node Id="accb4636-9334-4d3c-8cf7-a9d79dba25b51" Category="Comment" Bounds="-508.973413923581,-93.749997253418,231.406666666667,41.92" Label="Recieves Messages and sends them to a IRouting instance" UseManualLocation="True" />
+    <Node Id="accb4636-9334-4d3c-8cf7-a9d79dba25b51" Category="Comment" Bounds="-606.973413923581,-75.749997253418,231.406666666667,41.92" Label="Recieves Messages and sends them to a IRouting instance" UseManualLocation="True" />
   </Nodes>
   <Links>
     <Link Source="@2" Target="@3" Bounds="-312.855171813965,-170.35917921801,82.1368875966076,0.271359574519209" />
-    <Link Source="@3" Target="(@1 Namespace=Esb Type=IMessageQueue)" Bounds="-182.023524557717,-157.52,0.117229125587329,92.5000134456455" />
+    <Link Source="@3" Target="(@1 Namespace=Esb Type=IMessageQueue)" Bounds="-182.023524557717,-157.52,0.117229125587329,92.5000134456454" />
     <Link Source="@3" Target="(@1 Namespace=Esb.Transport Type=ISender)" Bounds="-142.361666666666,-170.52,86.6433333333329,2.8421709430404E-14" />
-    <Link Source="accb4636-9334-4d3c-8cf7-a9d79dba25b51" Target="@2" Bounds="-385.437507394035,-148.511507420034,20.4639091944279,54.7615101666165" />
+    <Link Source="accb4636-9334-4d3c-8cf7-a9d79dba25b51" Target="@2" Bounds="-466.823869749345,-151.083983287928,87.863993887715,75.3339842797491" />
   </Links>
   <Categories>
     <Category Id="CodeSchema_Interface" Label="Interface" BasedOn="CodeSchema_Type" CanBeDataDriven="True" DefaultAction="Node:Both:CodeSchema_Member" Icon="CodeSchema_Interface" NavigationActionLabel="Interfaces" />
