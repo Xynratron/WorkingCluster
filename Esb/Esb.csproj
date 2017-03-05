@@ -45,6 +45,7 @@
     <Compile Include="Envelope.cs" />
     <Compile Include="IMessageQueue.cs" />
     <Compile Include="IMessageDispatcher.cs" />
+    <Compile Include="MessageQueue.cs" />
     <Compile Include="Transport\INodeSelectionStrategie.cs" />
     <Compile Include="Transport\IReceiver.cs" />
     <Compile Include="Transport\IRouter.cs" />
