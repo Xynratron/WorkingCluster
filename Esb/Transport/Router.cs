@@ -12,6 +12,10 @@ namespace Esb.Transport
             INodeRoutingStrategy routingStrategy)
         {
             Receiver = receiver;
+
+            if (Receiver != null)
+                Receiver.MessageArrived = Process;
+
             MessageQueue = messageQueue;
             ClusterConfiguration = clusterConfiguration;
             Sender = sender;
