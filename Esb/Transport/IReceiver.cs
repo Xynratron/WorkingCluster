@@ -8,6 +8,6 @@ namespace Esb.Transport
     public interface IReceiver
     {
         void Receive(Envelope messageEnvelope);
-        IRouter Router { get; }
+        Action<Envelope> MessageArrived(Envelope envelope);
     }
 }

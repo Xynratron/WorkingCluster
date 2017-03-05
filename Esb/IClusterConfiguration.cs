@@ -9,7 +9,7 @@ namespace Esb
         void AddProcessorsToNode(INodeConfiguration node, List<IProcessor> processors);
         void RemoveProcessorsFromNode(INodeConfiguration node, List<IProcessor> processors);
         bool HasLocalProcessing(Envelope message);
-        List<INodeConfiguration> GetClusterNodesForMessage(Envelope message);
+        IEnumerable<INodeConfiguration> GetClusterNodesForMessage(Envelope message);
         bool IsMultiProcessable(Envelope message);
     }
 

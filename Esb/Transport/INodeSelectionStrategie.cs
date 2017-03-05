@@ -7,6 +7,6 @@ namespace Esb.Transport
 {
     public interface INodeRoutingStrategy
     {
-        INodeConfiguration SelectNode(List<INodeConfiguration> nodes);
+        INodeConfiguration SelectNode(IEnumerable<INodeConfiguration> nodes);
     }
  }

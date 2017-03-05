@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Esb.Transport
 {
-    internal class Router : IRouter
+    public class Router : IRouter
     {
         public Router(IReceiver receiver, IMessageQueue messageQueue, 
             IClusterConfiguration clusterConfiguration, ISender sender,
@@ -44,10 +44,16 @@ namespace Esb.Transport
                 if (ClusterConfiguration.HasLocalProcessing(message))
                     MessageQueue.Add(message);
                 else
-                    Sender.Send(message);
+                    Sender.Send(message, GetNodeFromRoutingStrategy(message));
                 return true;
             }
             return false;
+        }
+
+        private INodeConfiguration GetNodeFromRoutingStrategy(Envelope message)
+        {
+            var processingNodes = ClusterConfiguration.GetClusterNodesForMessage(message);
+            return RoutingStrategy.SelectNode(processingNodes);
         }
 
         public IReceiver Receiver { get; }
