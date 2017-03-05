@@ -22,10 +22,8 @@ namespace Esb.Transport.Tests
             var messageQueue = Mock.Create<IMessageQueue>();
             messageQueue.Arrange(o => o.Add(message)).MustBeCalled();
 
-            var clusterConfig = Mock.Create<IClusterConfiguration>();
-            clusterConfig.Arrange(o => o.HasLocalProcessing(message)).Returns(true);
-            clusterConfig.Arrange(o => o.IsMultiProcessable(message)).Returns(false);
-            
+            var clusterConfig = ClusterConfiguration(message, true, false);
+
             var router = new Router(null, messageQueue, clusterConfig, null, null);
             router.Process(message);
 
@@ -41,9 +39,7 @@ namespace Esb.Transport.Tests
             var sender = Mock.Create<ISender>();
             sender.Arrange(o => o.Send(message)).MustBeCalled();
             
-            var clusterConfig = Mock.Create<IClusterConfiguration>();
-            clusterConfig.Arrange(o => o.HasLocalProcessing(message)).Returns(false);
-            clusterConfig.Arrange(o => o.IsMultiProcessable(message)).Returns(false);
+            var clusterConfig = ClusterConfiguration(message, false, false);
 
             var router = new Router(null, null, clusterConfig, sender, null);
             router.Process(message);
@@ -62,15 +58,21 @@ namespace Esb.Transport.Tests
             sender.Arrange(o => o.Send(message, node1)).MustBeCalled();
             sender.Arrange(o => o.Send(message, node2)).MustBeCalled();
 
-            var clusterConfig = Mock.Create<IClusterConfiguration>();
-            clusterConfig.Arrange(o => o.HasLocalProcessing(message)).Returns(false);
-            clusterConfig.Arrange(o => o.IsMultiProcessable(message)).Returns(true);
-            clusterConfig.Arrange(o => o.GetClusterNodesForMessage(message)).Returns(new [] { node1, node2 });
-            
+            var clusterConfig = ClusterConfiguration(message, false, true, node1, node2);
+
             var router = new Router(null, null, clusterConfig, sender, null);
             router.Process(message);
 
             sender.Assert();
+        }
+
+        private static IClusterConfiguration ClusterConfiguration(Envelope message, bool local, bool multi, params INodeConfiguration[] nodes)
+        {
+            var clusterConfig = Mock.Create<IClusterConfiguration>();
+            clusterConfig.Arrange(o => o.HasLocalProcessing(message)).Returns(local);
+            clusterConfig.Arrange(o => o.IsMultiProcessable(message)).Returns(multi);
+            clusterConfig.Arrange(o => o.GetClusterNodesForMessage(message)).Returns(nodes);
+            return clusterConfig;
         }
 
         [Test()]
@@ -89,10 +91,7 @@ namespace Esb.Transport.Tests
             sender.Arrange(o => o.Send(message, node1)).MustBeCalled();
             sender.Arrange(o => o.Send(message, node2)).MustBeCalled();
 
-            var clusterConfig = Mock.Create<IClusterConfiguration>();
-            clusterConfig.Arrange(o => o.HasLocalProcessing(message)).Returns(true);
-            clusterConfig.Arrange(o => o.IsMultiProcessable(message)).Returns(true);
-            clusterConfig.Arrange(o => o.GetClusterNodesForMessage(message)).Returns(new[] { localNode, node1, node2 });
+            var clusterConfig = ClusterConfiguration(message, true, true, localNode, node1, node2);
 
             var router = new Router(null, messageQueue, clusterConfig, sender, null);
             router.Process(message);
@@ -113,10 +112,7 @@ namespace Esb.Transport.Tests
             var sender = Mock.Create<ISender>();
             sender.Arrange(o => o.Send(message, node2)).MustBeCalled();
 
-            var clusterConfig = Mock.Create<IClusterConfiguration>();
-            clusterConfig.Arrange(o => o.HasLocalProcessing(message)).Returns(false);
-            clusterConfig.Arrange(o => o.IsMultiProcessable(message)).Returns(false);
-            clusterConfig.Arrange(o => o.GetClusterNodesForMessage(message)).Returns(new[] { node1, node2 });
+            var clusterConfig = ClusterConfiguration(message, false, false, node1, node2);
 
             var routingStrategy = Mock.Create<INodeRoutingStrategy>();
             routingStrategy.Arrange(o => o.SelectNode(new[] {node1, node2})).Returns(node2);

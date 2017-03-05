@@ -44,16 +44,24 @@ namespace Esb.Transport
                 if (ClusterConfiguration.HasLocalProcessing(message))
                     MessageQueue.Add(message);
                 else
-                    Sender.Send(message, GetNodeFromRoutingStrategy(message));
+                    SentToNodeFromRoutingStrategy(message);
                 return true;
             }
             return false;
         }
 
-        private INodeConfiguration GetNodeFromRoutingStrategy(Envelope message)
+        private void SentToNodeFromRoutingStrategy(Envelope message)
         {
-            var processingNodes = ClusterConfiguration.GetClusterNodesForMessage(message);
-            return RoutingStrategy.SelectNode(processingNodes);
+            if (RoutingStrategy == null)
+            {
+                Sender.Send(message);
+            }
+            else
+            {
+                var processingNodes = ClusterConfiguration.GetClusterNodesForMessage(message);
+                var routing = RoutingStrategy.SelectNode(processingNodes);
+                Sender.Send(message, routing);
+            }
         }
 
         public IReceiver Receiver { get; }
