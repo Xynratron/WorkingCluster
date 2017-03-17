@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using NUnit.Framework;
 using NUnit.Framework.Constraints;
 
@@ -50,6 +52,11 @@ namespace Esb.Tests
         public static void ShouldContain<T>(this IEnumerable<T> list, T item)
         {
             list.Should(Contains.Item(item));
+        }
+
+         public static void ShouldContain<T>(this IEnumerable<T> list, Func<T, bool> item)
+        {
+            Assert.IsTrue(list.Any());
         }
 
         public static void ShouldNotContain<T>(this IEnumerable<T> list, T item)

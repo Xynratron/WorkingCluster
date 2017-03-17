@@ -7,31 +7,31 @@ namespace Esb
 {
     public class ClusterConfiguration : IClusterConfiguration
     {
-        private readonly List<INodeConfiguration> _nodes = new List<INodeConfiguration>();
+        public List<INodeConfiguration> Nodes { get; } = new List<INodeConfiguration>();
 
         public void AddNode(INodeConfiguration node)
         {
-            lock (_nodes)
+            lock (Nodes)
             {
-                if (_nodes.All(o => o.Address != node.Address))
-                    _nodes.Add(node);
+                if (Nodes.All(o => o.Address != node.Address))
+                    Nodes.Add(node);
             }
         }
 
         public void RemoveNode(INodeConfiguration node)
         {
-            lock (_nodes)
+            lock (Nodes)
             {
-                if (_nodes.Any(o => o.Address == node.Address))
-                    _nodes.RemoveAll(o => o.Address == node.Address);
+                if (Nodes.Any(o => o.Address == node.Address))
+                    Nodes.RemoveAll(o => o.Address == node.Address);
             }
         }
 
-        public void AddProcessorsToNode(INodeConfiguration node, List<IProcessor> processors)
+        public void AddProcessorsToNode(INodeConfiguration node, params IProcessor[] processors)
         {
-            lock (_nodes)
+            lock (Nodes)
             {
-                foreach (var nodeConfiguration in _nodes.Where(o => o.Address == node.Address))
+                foreach (var nodeConfiguration in Nodes.Where(o => o.Address == node.Address))
                 {
                     lock (nodeConfiguration.Processors)
                     {
@@ -44,11 +44,11 @@ namespace Esb
             }
         }
 
-        public void RemoveProcessorsFromNode(INodeConfiguration node, List<IProcessor> processors)
+        public void RemoveProcessorsFromNode(INodeConfiguration node, params IProcessor[] processors)
         {
-            lock (_nodes)
+            lock (Nodes)
             {
-                foreach (var nodeConfiguration in _nodes.Where(o => o.Address == node.Address))
+                foreach (var nodeConfiguration in Nodes.Where(o => o.Address == node.Address))
                 {
                     lock (nodeConfiguration.Processors)
                     {
@@ -68,9 +68,9 @@ namespace Esb
         /// <returns></returns>
         public bool HasLocalProcessing(Envelope message)
         {
-            lock (_nodes)
+            lock (Nodes)
             {
-               return  _nodes.Any(o => o.IsLocal);
+               return  Nodes.Any(o => o.IsLocal);
             }
         }
 
@@ -81,9 +81,9 @@ namespace Esb
         /// <returns></returns>
         public IEnumerable<INodeConfiguration> GetClusterNodesForMessage(Envelope message)
         {
-            lock (_nodes)
+            lock (Nodes)
             {
-                foreach (var nodeConfiguration in _nodes)
+                foreach (var nodeConfiguration in Nodes)
                 {
                     if (nodeConfiguration.Processors.Any(o => o.ProcessingType == message.MessageType))
                         yield return nodeConfiguration;
@@ -100,9 +100,9 @@ namespace Esb
         /// <returns></returns>
         public bool IsMultiProcessable(Envelope message)
         {
-            lock (_nodes)
+            lock (Nodes)
             {
-                return _nodes.Select(x => x.Processors.Where(o => o.ProcessingType == message.MessageType)).Count() > 1;
+                return Nodes.Select(x => x.Processors.Where(o => o.ProcessingType == message.MessageType)).Count() > 1;
             }
         }
     }

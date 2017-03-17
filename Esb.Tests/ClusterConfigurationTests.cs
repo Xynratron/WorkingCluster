@@ -1,34 +1,87 @@
 ﻿using NUnit.Framework;
 using System;
+using System.Linq;
+using Telerik.JustMock;
+using Telerik.JustMock.Helpers;
 
 namespace Esb.Tests
 {
     [TestFixture()]
     public class ClusterConfigurationTests
     {
+        private static Uri _testUri = new Uri("tcp://dns");
         [Test()]
         public void AddNodeTest()
         {
+            var node = Mock.Create<INodeConfiguration>();
+            node.Address = _testUri;
 
-            throw new NotImplementedException();
+            var cluster = new ClusterConfiguration();
+            cluster.AddNode(node);
+
+            cluster.Nodes.ShouldContain(node);
+        }
+
+        [Test()]
+        public void AddNodeHasNoDublicates()
+        {
+            var cluster = new ClusterConfiguration();
+
+            var node1 = Mock.Create<INodeConfiguration>();
+            node1.Address = _testUri;
+            cluster.AddNode(node1);
+            var node2 = Mock.Create<INodeConfiguration>();
+            node2.Address = _testUri;
+            cluster.AddNode(node2);
+            
+            (cluster.Nodes.Count(o => o.Address == _testUri) > 1).ShouldBeFalse();
         }
 
         [Test()]
         public void RemoveNodeTest()
         {
-            throw new NotImplementedException();
-        }
+            var node = Mock.Create<INodeConfiguration>();
+            var cluster = new ClusterConfiguration();
+            node.Address = _testUri;
+
+            cluster.AddNode(node);
+            cluster.Nodes.ShouldContain(node);
+
+            cluster.RemoveNode(node);
+            cluster.Nodes.ShouldNotContain(node);}
 
         [Test()]
         public void AddProcessorsToNodeTest()
         {
-            throw new NotImplementedException();
+            var node = Mock.Create<INodeConfiguration>();
+            node.Address = _testUri;
+            var processor = Mock.Create<IProcessor>();
+
+            var cluster = new ClusterConfiguration();
+            cluster.AddNode(node);
+            cluster.AddProcessorsToNode(node, processor);
+
+            cluster.Nodes.Any(o => o.Processors.Contains(processor)).ShouldBeTrue();
         }
 
         [Test()]
         public void RemoveProcessorsFromNodeTest()
         {
-            throw new NotImplementedException();
+            var node = Mock.Create<INodeConfiguration>();
+            node.Address = _testUri;
+            var processor = Mock.Create<IProcessor>();
+
+            var cluster = new ClusterConfiguration();
+            cluster.AddNode(node);
+            cluster.AddProcessorsToNode(node, processor);
+
+            cluster.Nodes.Any(o => o.Processors.Contains(processor)).ShouldBeTrue();
+
+            var node2 = Mock.Create<INodeConfiguration>();
+            node2.Address = _testUri;
+
+            cluster.RemoveNode(node2);
+            cluster.Nodes.Any(o => o.Processors.Contains(processor)).ShouldBeFalse();
         }
 
         [Test()]
