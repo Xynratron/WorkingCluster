@@ -8,8 +8,8 @@ namespace Esb
     {
         void AddNode(INodeConfiguration node);
         void RemoveNode(INodeConfiguration node);
-        void AddProcessorsToNode(INodeConfiguration node, List<IProcessor> processors);
-        void RemoveProcessorsFromNode(INodeConfiguration node, List<IProcessor> processors);
+        void AddProcessorsToNode(INodeConfiguration node, params IProcessor[] processors);
+        void RemoveProcessorsFromNode(INodeConfiguration node, params IProcessor[] processors);
         bool HasLocalProcessing(Envelope message);
         IEnumerable<INodeConfiguration> GetClusterNodesForMessage(Envelope message);
         bool IsMultiProcessable(Envelope message);
