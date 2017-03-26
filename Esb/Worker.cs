@@ -40,9 +40,14 @@ namespace Esb
             FindClusterAndEstablishCommunication();
         }
 
+        private void FindClusterAndEstablishCommunication()
+        {
+            throw new NotImplementedException();
+        }
+
         private void AddClusterCommunicationProcessors()
         {
-            LocalNode.Processors.Add();
+            throw new NotImplementedException();
         }
 
         private void CreateLocalNodeConfiguration()
@@ -56,10 +61,30 @@ namespace Esb
             SetLocalNodeOnline();
         }
 
+        private void SetLocalNodeOnline()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void SendOnlineMessage()
+        {
+            throw new NotImplementedException();
+        }
+
         public void Stop()
         {
             SendOfflineMessage();
             SetLocalNodeOffline();
+        }
+
+        private void SetLocalNodeOffline()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void SendOfflineMessage()
+        {
+            throw new NotImplementedException();
         }
     }
 

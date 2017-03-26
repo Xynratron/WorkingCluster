@@ -103,9 +103,10 @@ namespace Esb.Tests.Transport
         {
             var message = new Envelope(new TestMessage(), Priority.Normal);
             var node1 = Mock.Create<INodeConfiguration>();
-            node1.Address = new Uri("http://ShouldNotCall");
+            Mock.Arrange(() => node1.Address).Returns(new Uri("http://ShouldNotCall"));
+
             var node2 = Mock.Create<INodeConfiguration>();
-            node2.Address = new Uri("http://ShouldCall");
+            Mock.Arrange(() => node1.Address).Returns(new Uri("http://ShouldCall"));
 
             var sender = Mock.Create<ISender>();
             sender.Arrange(o => o.Send(message, node2)).MustBeCalled();
