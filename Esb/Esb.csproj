@@ -40,6 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ClusterConfiguration.cs" />
+    <Compile Include="Helpers.cs" />
     <Compile Include="IClusterConfiguration.cs" />
     <Compile Include="INodeConfiguration.cs" />
     <Compile Include="IProcessorConfiguration.cs" />
@@ -61,6 +62,9 @@
     <None Include="Overview.dgml">
       <SubType>Designer</SubType>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ClusterCommunication\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
