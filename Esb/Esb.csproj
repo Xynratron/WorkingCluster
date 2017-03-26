@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ClusterCommunication\Messages\AddNodeToCluster.cs" />
     <Compile Include="ClusterConfiguration.cs" />
     <Compile Include="Helpers.cs" />
     <Compile Include="IClusterConfiguration.cs" />
@@ -67,9 +68,7 @@
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ClusterCommunication\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

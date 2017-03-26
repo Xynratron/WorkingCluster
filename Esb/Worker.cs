@@ -2,6 +2,8 @@
 using System.Linq;
 using System.Text;
 using System.Threading;
+using Esb.ClusterCommunication.Messages;
+using Esb.Transport;
 
 namespace Esb
 {
@@ -12,15 +14,20 @@ namespace Esb
     {
         public INodeConfiguration LocalNode { get; private set; }
 
+
         private IMessageQueue _messageQueue;
+        private IRouter _router;
 
-        private WorkerConfiguration _workerConfiguration;
+        private readonly IClusterConfiguration _clusterConfiguration;
+        private readonly WorkerConfiguration _workerConfiguration;
 
-        public Worker(WorkerConfiguration workerConfiguration, IMessageQueue messageQueue)
+        public Worker(WorkerConfiguration workerConfiguration, IRouter router, IMessageQueue messageQueue)
         {
             _workerConfiguration = workerConfiguration;
+            _router = router;
             _messageQueue = messageQueue;
-
+            _clusterConfiguration = new ClusterConfiguration();
+            
             CreateLocalNodeConfiguration();
             AddClusterCommunicationProcessors();
             FindClusterAndEstablishCommunication();
@@ -49,12 +56,12 @@ namespace Esb
 
         private void SetLocalNodeOnline()
         {
-            throw new NotImplementedException();
+            _clusterConfiguration.AddNode(LocalNode);
         }
 
         private void SendOnlineMessage()
         {
-            throw new NotImplementedException();
+            _router.Process(new Envelope(new AddNodeToCluster(LocalNode), Priority.Administrative));
         }
 
         public void Stop()
