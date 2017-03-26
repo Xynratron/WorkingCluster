@@ -40,6 +40,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ClusterCommunication\Messages\AddNodeToCluster.cs" />
+    <Compile Include="ClusterCommunication\Messages\RemoveNodeFromCluster.cs" />
+    <Compile Include="ClusterCommunication\Proccessors\AddNodeToCluster.cs" />
+    <Compile Include="ClusterCommunication\Proccessors\RemoveNodeFromCluster.cs" />
     <Compile Include="ClusterConfiguration.cs" />
     <Compile Include="Helpers.cs" />
     <Compile Include="IClusterConfiguration.cs" />

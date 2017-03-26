@@ -1,0 +1,17 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Esb.ClusterCommunication.Messages;
+
+namespace Esb.ClusterCommunication
+{
+    public class AddNodeToCluster : IProcessor<AddNodeToCluster>
+    {
+        public void Process(IEnvironment environment, Envelope envelope, AddNodeToCluster message)
+        {
+        }
+
+        public Type ProcessingType => typeof(AddNodeToCluster);
+    }
+}

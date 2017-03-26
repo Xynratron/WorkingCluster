@@ -17,13 +17,4 @@ namespace Esb.ClusterCommunication.Messages
         ICollection<IProcessor> Processors { get; }
         Guid NodeId { get; }
     }
-
-    public class RemoveNodeFromCluster
-    {
-        public RemoveNodeFromCluster(INodeConfiguration nodeToRemove)
-        {
-            NodeId = nodeToRemove.NodeId;
-        }
-        Guid NodeId { get; }
-    }
 }
