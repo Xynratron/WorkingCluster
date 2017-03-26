@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Security.Cryptography.X509Certificates;
 
 namespace Esb
@@ -13,11 +12,5 @@ namespace Esb
         bool HasLocalProcessing(Envelope message);
         IEnumerable<INodeConfiguration> GetClusterNodesForMessage(Envelope message);
         bool IsMultiProcessable(Envelope message);
-    }
-
-    public interface IProcessor
-    {
-        Type ProcessingType { get; set; }
-
     }
 }

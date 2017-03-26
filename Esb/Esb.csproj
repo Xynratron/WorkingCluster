@@ -43,12 +43,15 @@
     <Compile Include="Helpers.cs" />
     <Compile Include="IClusterConfiguration.cs" />
     <Compile Include="INodeConfiguration.cs" />
+    <Compile Include="IProcessor.cs" />
     <Compile Include="IProcessorConfiguration.cs" />
     <Compile Include="Envelope.cs" />
     <Compile Include="IMessageQueue.cs" />
     <Compile Include="IMessageDispatcher.cs" />
+    <Compile Include="IWorker.cs" />
     <Compile Include="MessageQueue.cs" />
-    <Compile Include="Transport\INodeSelectionStrategie.cs" />
+    <Compile Include="NodeConfiguration.cs" />
+    <Compile Include="Transport\INodeRoutingStrategy.cs" />
     <Compile Include="Transport\IReceiver.cs" />
     <Compile Include="Transport\IRouter.cs" />
     <Compile Include="Transport\ISender.cs" />
@@ -57,6 +60,7 @@
     <Compile Include="Transport\Router.cs" />
     <Compile Include="Transport\SelectRandomNodeRoutingStrategy.cs" />
     <Compile Include="Worker.cs" />
+    <Compile Include="WorkerConfiguration.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Overview.dgml">

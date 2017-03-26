@@ -1,24 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
 
 namespace Esb
 {
-    public class WorkerConfiguration
-    {
-        public bool IsRootNode { get; set; }
-        public Guid NodeId { get; set; }
-        public Uri Address { get; set; }
-        public List<Uri> RootNodes { get; set; }
-    }
-
-    public interface IWorker
-    {
-        INodeConfiguration LocalNode { get; }
-    }
-
     /// <summary>
     /// The local worker process; has a own node with configuration
     /// </summary>
