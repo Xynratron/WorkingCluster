@@ -85,7 +85,7 @@ namespace Esb
             {
                 foreach (var nodeConfiguration in Nodes)
                 {
-                    if (nodeConfiguration.Processors.Any(o => o == message.MessageType))
+                    if (nodeConfiguration.Processors.Any(o => o.ProcessingType == message.MessageType))
                         yield return nodeConfiguration;
                 }
             }
@@ -102,7 +102,7 @@ namespace Esb
         {
             lock (Nodes)
             {
-                return Nodes.Select(x => x.Processors.Where(o => o == message.MessageType)).Count() > 1;
+                return Nodes.Select(x => x.Processors.Where(o => o.ProcessingType == message.MessageType)).Count() > 1;
             }
         }
     }
