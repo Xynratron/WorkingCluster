@@ -72,12 +72,12 @@ namespace Esb
 
         private void SetLocalNodeOffline()
         {
-            throw new NotImplementedException();
+            _clusterConfiguration.RemoveNode(LocalNode);
         }
 
         private void SendOfflineMessage()
         {
-            throw new NotImplementedException();
+            _router.Process(new Envelope(new RemoveNodeFromCluster(LocalNode), Priority.Administrative));
         }
     }
 
