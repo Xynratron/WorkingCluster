@@ -11,10 +11,10 @@ namespace Esb.ClusterCommunication.Messages
         {
             Address = nodeToAdd.Address;
             NodeId = nodeToAdd.NodeId;
-            Processors = new List<IProcessor>(nodeToAdd.Processors);
+            Processors = new List<Type>(nodeToAdd.Processors.Select(o => o.ProcessingType));
         }
         Uri Address { get; }
-        ICollection<IProcessor> Processors { get; }
+        ICollection<Type> Processors { get; }
         Guid NodeId { get; }
     }
 }

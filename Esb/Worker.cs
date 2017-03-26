@@ -16,7 +16,7 @@ namespace Esb
 
 
         private IMessageQueue _messageQueue;
-        private IRouter _router;
+        private readonly IRouter _router;
 
         private readonly IClusterConfiguration _clusterConfiguration;
         private readonly WorkerConfiguration _workerConfiguration;

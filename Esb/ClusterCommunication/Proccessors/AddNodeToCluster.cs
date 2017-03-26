@@ -13,5 +13,8 @@ namespace Esb.ClusterCommunication
         }
 
         public Type ProcessingType => typeof(AddNodeToCluster);
+
+        public AddNodeToCluster GetInstance => new AddNodeToCluster();
+        object IProcessor.GetInstance => GetInstance;
     }
 }

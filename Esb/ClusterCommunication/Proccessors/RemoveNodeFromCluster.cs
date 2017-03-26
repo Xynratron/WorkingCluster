@@ -9,5 +9,7 @@ namespace Esb.ClusterCommunication
         }
 
         public Type ProcessingType => typeof(RemoveNodeFromCluster);
+        object IProcessor.GetInstance => GetInstance;
+        public RemoveNodeFromCluster GetInstance => new RemoveNodeFromCluster();
     }
 }
