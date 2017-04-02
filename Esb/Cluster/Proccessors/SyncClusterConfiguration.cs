@@ -4,7 +4,7 @@ using Esb.Processing;
 
 namespace Esb.Cluster.Proccessors
 {
-    public class SendClusterConfiguration : IProcessor<ClusterConfiguration>
+    public class SyncClusterConfiguration : IProcessor<ClusterConfiguration>
     {
         public void Process(IEnvironment environment, Envelope envelope, ClusterConfiguration message)
         {
@@ -12,7 +12,7 @@ namespace Esb.Cluster.Proccessors
         }
 
         public Type ProcessingType => typeof(ClusterConfiguration);
-        public IProcessor<ClusterConfiguration> GetInstance => new SendClusterConfiguration();
+        public IProcessor<ClusterConfiguration> GetInstance => new SyncClusterConfiguration();
         object IProcessor.GetInstance => GetInstance;
     }
 }

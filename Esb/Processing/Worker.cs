@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Esb.Cluster;
 using Esb.Cluster.Proccessors;
 using Esb.Message;
@@ -28,8 +29,17 @@ namespace Esb.Processing
             
             CreateLocalNodeConfiguration();
             AddClusterCommunicationProcessors();
+            InitialStartUpAync();
+        }
 
-            FindClusterAndEstablishCommunication();
+        public WorkerStatus Status { get; private set; } = WorkerStatus.Initialization;
+
+        public void InitialStartUpAync()
+        {
+            Task.Factory.StartNew(() =>
+            {
+                Start();
+            });
         }
 
         private void FindClusterAndEstablishCommunication()
@@ -37,12 +47,24 @@ namespace Esb.Processing
             if (_workerConfiguration.ControllerNodes.Empty() && IsController)
                 return;
 
+            foreach (var controllerNode in _workerConfiguration.ControllerNodes)
+            {
+                if (_router.ProcessSync(new Envelope(new AskForClusterConfiguration(), Priority.Administrative),
+                    new NodeConfiguration(this, Guid.Empty, controllerNode)))
+                    break;
+            }
         }
 
         private void AddClusterCommunicationProcessors()
         {
             LocalNode.Processors.Add(new RemoveNodeFromCluster());
             LocalNode.Processors.Add(new AddNodeToCluster());
+            LocalNode.Processors.Add(new SyncClusterConfiguration());
+
+            if (!IsController)
+                return;
+
+            LocalNode.Processors.Add(new AskForClusterConfiguration());
         }
 
         private void CreateLocalNodeConfiguration()
@@ -52,8 +74,12 @@ namespace Esb.Processing
 
         public void Start()
         {
+            Status = WorkerStatus.Initialization;
+            FindClusterAndEstablishCommunication();
+            Status = WorkerStatus.Starting;
             SetLocalNodeOnline();
             SendOnlineMessage();
+            Status = WorkerStatus.Started;
         }
 
         private void SetLocalNodeOnline()
@@ -68,8 +94,10 @@ namespace Esb.Processing
 
         public void Stop()
         {
+            Status = WorkerStatus.Stopping;
             SendOfflineMessage();
             SetLocalNodeOffline();
+            Status = WorkerStatus.Stopped;
         }
 
         private void SetLocalNodeOffline()
@@ -83,5 +111,10 @@ namespace Esb.Processing
         }
 
         public bool IsController => _workerConfiguration.IsControllerNode;
+    }
+
+    public enum WorkerStatus
+    {
+        Initialization, Starting, Started, Stopping, Stopped
     }
 }

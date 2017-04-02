@@ -1,4 +1,5 @@
 ﻿using System;
+using Esb.Cluster;
 using Esb.Message;
 
 namespace Esb.Processing
@@ -17,5 +18,6 @@ namespace Esb.Processing
 
     public interface IEnvironment
     {
+        IClusterConfiguration LocalCluster { get; }
     }
 }

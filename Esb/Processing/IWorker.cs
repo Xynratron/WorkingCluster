@@ -6,5 +6,7 @@ namespace Esb.Processing
     {
         INodeConfiguration LocalNode { get; }
         bool IsController { get; }
+
+        WorkerStatus Status { get; }
     }
 }

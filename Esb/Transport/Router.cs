@@ -73,6 +73,16 @@ namespace Esb.Transport
         public IClusterConfiguration ClusterConfiguration { get; }
         public ISender Sender { get; }
         public INodeRoutingStrategy RoutingStrategy { get; }
-         
+        /// <summary>
+        /// We try  to process the message in Sync and return false if we got an Exception
+        /// e.g. if the given node is not online
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="targetNode"></param>
+        /// <returns></returns>
+        public bool ProcessSync(Envelope message, INodeConfiguration targetNode)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

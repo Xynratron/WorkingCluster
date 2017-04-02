@@ -2,9 +2,9 @@ using System;
 
 namespace Esb.Cluster.Messages
 {
-    public class RemoveNodeFromCluster
+    public class RemoveNodeFromClusterMessage
     {
-        public RemoveNodeFromCluster(INodeConfiguration nodeToRemove)
+        public RemoveNodeFromClusterMessage(INodeConfiguration nodeToRemove)
         {
             NodeId = nodeToRemove.NodeId;
         }
