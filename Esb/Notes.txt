@@ -1,0 +1,1 @@
+﻿https://blogs.msdn.microsoft.com/digitalnetbizz/2004/01/31/create-assembly-in-memory-and-run-it/
