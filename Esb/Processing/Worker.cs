@@ -32,7 +32,7 @@ namespace Esb.Processing
             InitialStartUpAync();
         }
 
-        public WorkerStatus Status { get; private set; } = WorkerStatus.Initialization;
+        public WorkerStatus Status { get; private set; } = WorkerStatus.Stopped;
 
         public void InitialStartUpAync()
         {
@@ -74,6 +74,8 @@ namespace Esb.Processing
 
         public void Start()
         {
+            if (Status != WorkerStatus.Stopped)
+                throw new Exception("Cannot start worker, because it is not stopped");
             Status = WorkerStatus.Initialization;
             FindClusterAndEstablishCommunication();
             Status = WorkerStatus.Starting;
@@ -94,6 +96,9 @@ namespace Esb.Processing
 
         public void Stop()
         {
+            if (Status != WorkerStatus.Starting)
+                throw new Exception("Cannot stop worker, because it is not started");
+
             Status = WorkerStatus.Stopping;
             SendOfflineMessage();
             SetLocalNodeOffline();
