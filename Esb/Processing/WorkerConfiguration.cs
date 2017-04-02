@@ -5,9 +5,9 @@ namespace Esb.Processing
 {
     public class WorkerConfiguration
     {
-        public bool IsRootNode { get; set; }
+        public bool IsControllerNode { get; set; }
         public Guid NodeId { get; set; }
         public Uri Address { get; set; }
-        public List<Uri> RootNodes { get; set; }
+        public List<Uri> ControllerNodes { get; set; }
     }
 }

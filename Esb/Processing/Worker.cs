@@ -12,8 +12,7 @@ namespace Esb.Processing
     public class Worker : IWorker
     {
         public INodeConfiguration LocalNode { get; private set; }
-
-
+        
         private IMessageQueue _messageQueue;
         private readonly IRouter _router;
 
@@ -29,12 +28,13 @@ namespace Esb.Processing
             
             CreateLocalNodeConfiguration();
             AddClusterCommunicationProcessors();
+
             FindClusterAndEstablishCommunication();
         }
 
         private void FindClusterAndEstablishCommunication()
         {
-            throw new NotImplementedException();
+           //_workerConfiguration.RootNodes
         }
 
         private void AddClusterCommunicationProcessors()
@@ -50,8 +50,8 @@ namespace Esb.Processing
 
         public void Start()
         {
-            SendOnlineMessage();
             SetLocalNodeOnline();
+            SendOnlineMessage();
         }
 
         private void SetLocalNodeOnline()
@@ -79,7 +79,7 @@ namespace Esb.Processing
         {
             _router.Process(new Envelope(new Cluster.Messages.RemoveNodeFromCluster(LocalNode), Priority.Administrative));
         }
-    }
 
-    
+        public bool IsController => _workerConfiguration.IsControllerNode;
+    }
 }

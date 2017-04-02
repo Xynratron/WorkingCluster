@@ -40,7 +40,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Cluster\Messages\AddNodeToCluster.cs" />
+    <Compile Include="Cluster\Messages\AskForClusterConfiguration.cs" />
+    <Compile Include="Cluster\Messages\ClusterConfiguration.cs" />
+    <Compile Include="Message\BroadcastProcessingMessageAttribute.cs" />
+    <Compile Include="Message\ControllerMessageAttribute.cs" />
     <Compile Include="Cluster\Messages\RemoveNodeFromCluster.cs" />
+    <Compile Include="Message\SingleProcessingMessageAttribute.cs" />
     <Compile Include="Cluster\Proccessors\AddNodeToCluster.cs" />
     <Compile Include="Cluster\Proccessors\AddProcessorToNode.cs" />
     <Compile Include="Cluster\Messages\AddProcessorToNode.cs" />

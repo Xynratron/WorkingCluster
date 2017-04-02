@@ -13,11 +13,13 @@ namespace Esb.Cluster
             Address = address;
             Processors = new List<IProcessor>();
             NodeId = nodeId;
+            IsControllerNode = _worker.IsController;
         }
 
         public bool IsLocal => _worker.LocalNode.NodeId == NodeId;
         public Uri Address { get; }
         public ICollection<IProcessor> Processors { get; }
         public Guid NodeId { get; }
+        public bool IsControllerNode { get; }
     }
 }
