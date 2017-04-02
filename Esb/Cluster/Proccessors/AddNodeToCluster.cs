@@ -13,7 +13,7 @@ namespace Esb.Cluster.Proccessors
 
         public Type ProcessingType => typeof(AddNodeToCluster);
 
-        public AddNodeToCluster GetInstance => new AddNodeToCluster();
+        public IProcessor<AddNodeToCluster> GetInstance => new AddNodeToCluster();
         object IProcessor.GetInstance => GetInstance;
     }
 }

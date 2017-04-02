@@ -13,6 +13,6 @@ namespace Esb.Cluster.Proccessors
 
         public Type ProcessingType => typeof(RemoveNodeFromCluster);
         object IProcessor.GetInstance => GetInstance;
-        public RemoveNodeFromCluster GetInstance => new RemoveNodeFromCluster();
+        public IProcessor<RemoveNodeFromCluster> GetInstance => new RemoveNodeFromCluster();
     }
 }

@@ -6,7 +6,7 @@ namespace Esb.Processing
     public interface IProcessor<T> : IProcessor
     {
         void Process(IEnvironment environment, Envelope envelope, T message);
-        new T GetInstance { get; }
+        new IProcessor<T> GetInstance { get; }
     }
 
     public interface IProcessor
