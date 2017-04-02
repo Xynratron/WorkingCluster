@@ -42,8 +42,12 @@
     <Compile Include="Cluster\Messages\AddNodeToCluster.cs" />
     <Compile Include="Cluster\Messages\RemoveNodeFromCluster.cs" />
     <Compile Include="Cluster\Proccessors\AddNodeToCluster.cs" />
+    <Compile Include="Cluster\Proccessors\AddProcessorToNode.cs" />
+    <Compile Include="Cluster\Messages\AddProcessorToNode.cs" />
     <Compile Include="Cluster\Proccessors\RemoveNodeFromCluster.cs" />
     <Compile Include="Cluster\ClusterConfiguration.cs" />
+    <Compile Include="Cluster\Messages\RemoveProcessorFromNode.cs" />
+    <Compile Include="Cluster\Proccessors\RemoveProcessorFromNode.cs" />
     <Compile Include="Helpers.cs" />
     <Compile Include="Cluster\IClusterConfiguration.cs" />
     <Compile Include="Cluster\INodeConfiguration.cs" />
