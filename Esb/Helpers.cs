@@ -16,5 +16,10 @@ namespace Esb
             }
             return collection;
         }
+
+        public static bool Empty<T>(this IEnumerable<T> collection)
+        {
+            return !collection.Any();
+        }
     }
 }
