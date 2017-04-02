@@ -6,8 +6,8 @@ namespace Esb.Cluster.Messages
     {
         public RemoveNodeFromClusterMessage(INodeConfiguration nodeToRemove)
         {
-            NodeId = nodeToRemove.NodeId;
+            Address = nodeToRemove.Address;
         }
-        Guid NodeId { get; }
+        public Uri Address { get; set; }
     }
 }

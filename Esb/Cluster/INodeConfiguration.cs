@@ -23,11 +23,6 @@ namespace Esb.Cluster
         /// <summary>
         /// a unique id of the node, maybe to delete, because we have the address as unique id.
         /// </summary>
-        [Obsolete("we have the node address as unique id")]
-        Guid NodeId { get; }
-        /// <summary>
-        /// This Node is part of the Cluster Coucil
-        /// </summary>
         bool IsControllerNode { get; }
     }
 }

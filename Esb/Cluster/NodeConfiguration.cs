@@ -16,7 +16,7 @@ namespace Esb.Cluster
             IsControllerNode = _worker.IsController;
         }
 
-        public bool IsLocal => _worker.LocalNode.NodeId == NodeId;
+        public bool IsLocal => _worker.LocalNode.Address == Address;
         public Uri Address { get; }
         public ICollection<IProcessor> Processors { get; }
         public Guid NodeId { get; }

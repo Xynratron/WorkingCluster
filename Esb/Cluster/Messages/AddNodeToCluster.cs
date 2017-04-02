@@ -9,7 +9,6 @@ namespace Esb.Cluster.Messages
         public AddNodeToCluster(INodeConfiguration nodeToAdd)
         {
             Address = nodeToAdd.Address;
-            NodeId = nodeToAdd.NodeId;
             Processors = new List<Type>(nodeToAdd.Processors.Select(o => o.ProcessingType));
         }
         Uri Address { get; }
