@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Esb.Cluster;
+using Esb.Cluster.Messages;
 using Esb.Cluster.Proccessors;
 using Esb.Message;
 using Esb.Transport;
+using AddNodeToCluster = Esb.Cluster.Proccessors.AddNodeToCluster;
+using AskForClusterConfiguration = Esb.Cluster.Proccessors.AskForClusterConfiguration;
+using ClusterConfiguration = Esb.Cluster.ClusterConfiguration;
 
 namespace Esb.Processing
 {
@@ -112,7 +116,7 @@ namespace Esb.Processing
 
         private void SendOfflineMessage()
         {
-            _router.Process(new Envelope(new Cluster.Messages.RemoveNodeFromCluster(LocalNode), Priority.Administrative));
+            _router.Process(new Envelope(new RemoveNodeFromClusterMessage(LocalNode), Priority.Administrative));
         }
 
         public bool IsController => _workerConfiguration.IsControllerNode;
