@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using Esb.Processing;
 using NUnit.Framework;
 using NUnit.Framework.Constraints;
 
@@ -82,6 +84,21 @@ namespace Esb.Tests
         public static void ShouldBeTrue(this bool b)
         {
             b.Should(Is.True);
+        }
+    }
+
+    public static class WorkerHelper
+    {
+        public static Worker WaitForStartUp(this Worker worker)
+        {
+            var sw = new Stopwatch();
+            while (worker.Status != WorkerStatus.Started)
+            {
+                if (sw.ElapsedMilliseconds > 30000)
+                    throw new TimeoutException("Waited for 30 seconds but worker did not come up.");
+                System.Threading.Thread.Sleep(1);
+            }
+            return worker;
         }
     }
 }

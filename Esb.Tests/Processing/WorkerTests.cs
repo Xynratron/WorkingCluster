@@ -20,27 +20,10 @@ namespace Esb.Tests.Processing
         [Test()]
         public void WorkerTest()
         {
-            var worker =
-                GetSingleWorker(new WorkerConfiguration
-                {
-                    Address = new Uri("ws://local}"),
-                    ControllerNodes = new List<Uri>(),
-                    IsControllerNode = true
-                });
-            WaitForStartUp(worker);
-            Assert.NotNull(worker);
+           
         }
 
-        private void WaitForStartUp(Worker worker)
-        {
-            var sw = new Stopwatch();
-            while (worker.Status != WorkerStatus.Started)
-            {
-                if (sw.ElapsedMilliseconds > 30000)
-                    throw new TimeoutException("Waited for 30 seconds but worker did not come up.");
-                System.Threading.Thread.Sleep(1);
-            }
-        }
+      
 
         private Worker GetSingleWorker(WorkerConfiguration workerConfiguration, IRouter router = null, IMessageQueue messageQueue = null)
         {
@@ -56,12 +39,34 @@ namespace Esb.Tests.Processing
         [Test()]
         public void SingleWorkerAsControllerIsStartingUp()
         {
-            throw new NotImplementedException();
+            var worker =
+                 GetSingleWorker(new WorkerConfiguration
+                 {
+                     Address = new Uri("http://localhost"),
+                     ControllerNodes = new List<Uri>(),
+                     IsControllerNode = true
+                 }).WaitForStartUp();
+            Assert.NotNull(worker);
         }
         [Test()]
         public void DoubleMasterWorkerAsControllerHaveSameConfiguration()
         {
-            throw new NotImplementedException();
+            var worker1 = GetSingleWorker(new WorkerConfiguration
+               {
+                   Address = new Uri("http://localhost/1"),
+                   ControllerNodes = new List<Uri>(new [] {new Uri("http://localhost/1"), new Uri("http://localhost/2") }),
+                   IsControllerNode = true
+               }).WaitForStartUp();
+
+            var worker2 = GetSingleWorker(new WorkerConfiguration
+            {
+                Address = new Uri("http://localhost/2"),
+                ControllerNodes = new List<Uri>(new[] { new Uri("http://localhost/1"), new Uri("http://localhost/2") }),
+                IsControllerNode = true
+            }).WaitForStartUp();
+            
+            Assert.NotNull(worker1);
+            Assert.NotNull(worker2);
         }
 
         [Test()]
