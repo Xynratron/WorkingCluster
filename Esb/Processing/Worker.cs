@@ -38,7 +38,7 @@ namespace Esb.Processing
 
         public WorkerStatus Status { get; private set; } = WorkerStatus.Stopped;
 
-        public void InitialStartUpAync()
+        private void InitialStartUpAync()
         {
             Task.Factory.StartNew(() =>
             {
@@ -54,7 +54,7 @@ namespace Esb.Processing
             foreach (var controllerNode in _workerConfiguration.ControllerNodes)
             {
                 if (_router.ProcessSync(new Envelope(new AskForClusterConfiguration(), Priority.Administrative),
-                    new NodeConfiguration(this, Guid.Empty, controllerNode)))
+                    new NodeConfiguration(this, controllerNode)))
                     break;
             }
         }
@@ -73,7 +73,7 @@ namespace Esb.Processing
 
         private void CreateLocalNodeConfiguration()
         {
-            LocalNode = new NodeConfiguration(this, _workerConfiguration.NodeId, _workerConfiguration.Address);
+            LocalNode = new NodeConfiguration(this, _workerConfiguration.Address);
         }
 
         public void Start()
