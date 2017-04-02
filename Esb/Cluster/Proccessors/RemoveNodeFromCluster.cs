@@ -1,6 +1,8 @@
 using System;
+using Esb.Message;
+using Esb.Processing;
 
-namespace Esb.ClusterCommunication
+namespace Esb.Cluster.Proccessors
 {
     public class RemoveNodeFromCluster : IProcessor<RemoveNodeFromCluster>
     {

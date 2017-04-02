@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using Esb.ClusterCommunication.Messages;
+using Esb.Cluster;
+using Esb.Cluster.Proccessors;
+using Esb.Message;
 using Esb.Transport;
 
-namespace Esb
+namespace Esb.Processing
 {
     /// <summary>
     /// The local worker process; has a own node with configuration
@@ -40,7 +39,8 @@ namespace Esb
 
         private void AddClusterCommunicationProcessors()
         {
-            throw new NotImplementedException();
+            LocalNode.Processors.Add(new RemoveNodeFromCluster());
+            LocalNode.Processors.Add(new AddNodeToCluster());
         }
 
         private void CreateLocalNodeConfiguration()
@@ -61,7 +61,7 @@ namespace Esb
 
         private void SendOnlineMessage()
         {
-            _router.Process(new Envelope(new AddNodeToCluster(LocalNode), Priority.Administrative));
+            _router.Process(new Envelope(new Cluster.Messages.AddNodeToCluster(LocalNode), Priority.Administrative));
         }
 
         public void Stop()
@@ -77,7 +77,7 @@ namespace Esb
 
         private void SendOfflineMessage()
         {
-            _router.Process(new Envelope(new RemoveNodeFromCluster(LocalNode), Priority.Administrative));
+            _router.Process(new Envelope(new Cluster.Messages.RemoveNodeFromCluster(LocalNode), Priority.Administrative));
         }
     }
 

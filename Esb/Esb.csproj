@@ -39,22 +39,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ClusterCommunication\Messages\AddNodeToCluster.cs" />
-    <Compile Include="ClusterCommunication\Messages\RemoveNodeFromCluster.cs" />
-    <Compile Include="ClusterCommunication\Proccessors\AddNodeToCluster.cs" />
-    <Compile Include="ClusterCommunication\Proccessors\RemoveNodeFromCluster.cs" />
-    <Compile Include="ClusterConfiguration.cs" />
+    <Compile Include="Cluster\Messages\AddNodeToCluster.cs" />
+    <Compile Include="Cluster\Messages\RemoveNodeFromCluster.cs" />
+    <Compile Include="Cluster\Proccessors\AddNodeToCluster.cs" />
+    <Compile Include="Cluster\Proccessors\RemoveNodeFromCluster.cs" />
+    <Compile Include="Cluster\ClusterConfiguration.cs" />
     <Compile Include="Helpers.cs" />
-    <Compile Include="IClusterConfiguration.cs" />
-    <Compile Include="INodeConfiguration.cs" />
-    <Compile Include="IProcessor.cs" />
-    <Compile Include="IProcessorConfiguration.cs" />
-    <Compile Include="Envelope.cs" />
-    <Compile Include="IMessageQueue.cs" />
-    <Compile Include="IMessageDispatcher.cs" />
-    <Compile Include="IWorker.cs" />
-    <Compile Include="MessageQueue.cs" />
-    <Compile Include="NodeConfiguration.cs" />
+    <Compile Include="Cluster\IClusterConfiguration.cs" />
+    <Compile Include="Cluster\INodeConfiguration.cs" />
+    <Compile Include="Processing\IProcessor.cs" />
+    <Compile Include="Processing\IProcessorConfiguration.cs" />
+    <Compile Include="Message\Envelope.cs" />
+    <Compile Include="Message\IMessageQueue.cs" />
+    <Compile Include="Message\IMessageDispatcher.cs" />
+    <Compile Include="Processing\IWorker.cs" />
+    <Compile Include="Message\MessageQueue.cs" />
+    <Compile Include="Cluster\NodeConfiguration.cs" />
     <Compile Include="Transport\INodeRoutingStrategy.cs" />
     <Compile Include="Transport\IReceiver.cs" />
     <Compile Include="Transport\IRouter.cs" />
@@ -63,8 +63,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Transport\Router.cs" />
     <Compile Include="Transport\SelectRandomNodeRoutingStrategy.cs" />
-    <Compile Include="Worker.cs" />
-    <Compile Include="WorkerConfiguration.cs" />
+    <Compile Include="Processing\Worker.cs" />
+    <Compile Include="Processing\WorkerConfiguration.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Overview.dgml">

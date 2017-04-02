@@ -1,4 +1,6 @@
-namespace Esb
+using Esb.Cluster;
+
+namespace Esb.Processing
 {
     public interface IWorker
     {

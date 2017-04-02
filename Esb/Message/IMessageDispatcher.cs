@@ -1,4 +1,4 @@
-﻿namespace Esb
+﻿namespace Esb.Message
 {
     public interface IMessageDispatcher
     {

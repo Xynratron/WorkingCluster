@@ -1,7 +1,8 @@
 ﻿using NUnit.Framework;
 using System;
 using System.Linq;
-using MyMessageQueue = Esb.MessageQueue;
+using Esb.Message;
+using MyMessageQueue = Esb.Message.MessageQueue;
 
 namespace Esb.Tests
 {

@@ -1,4 +1,4 @@
-﻿namespace Esb
+namespace Esb.Processing
 {
     public interface IProcessorConfiguration
     {

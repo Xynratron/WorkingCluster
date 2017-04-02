@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Esb.ClusterCommunication.Messages;
+using Esb.Message;
+using Esb.Processing;
 
-namespace Esb.ClusterCommunication
+namespace Esb.Cluster.Proccessors
 {
     public class AddNodeToCluster : IProcessor<AddNodeToCluster>
     {

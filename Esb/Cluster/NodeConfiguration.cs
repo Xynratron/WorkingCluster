@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using Esb.Processing;
 
-namespace Esb
+namespace Esb.Cluster
 {
     public class NodeConfiguration : INodeConfiguration
     {

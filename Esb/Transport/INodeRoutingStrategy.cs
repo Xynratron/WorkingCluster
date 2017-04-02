@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Esb.Cluster;
 
 namespace Esb.Transport
 {

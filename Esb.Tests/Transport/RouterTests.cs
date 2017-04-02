@@ -1,4 +1,6 @@
 ﻿using System;
+using Esb.Cluster;
+using Esb.Message;
 using Esb.Transport;
 using NUnit.Framework;
 using Telerik.JustMock;

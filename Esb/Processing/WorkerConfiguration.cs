@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Esb
+namespace Esb.Processing
 {
     public class WorkerConfiguration
     {

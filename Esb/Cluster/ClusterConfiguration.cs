@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using Esb.Transport;
+using Esb.Message;
+using Esb.Processing;
 
-namespace Esb
+namespace Esb.Cluster
 {
     public class ClusterConfiguration : IClusterConfiguration
     {

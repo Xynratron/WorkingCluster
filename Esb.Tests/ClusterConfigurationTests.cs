@@ -1,6 +1,8 @@
 ﻿using NUnit.Framework;
 using System;
 using System.Linq;
+using Esb.Cluster;
+using Esb.Processing;
 using Telerik.JustMock;
 using Telerik.JustMock.Helpers;
 

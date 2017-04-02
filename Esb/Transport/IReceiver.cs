@@ -1,4 +1,5 @@
 ﻿using System;
+using Esb.Message;
 
 namespace Esb.Transport
 {

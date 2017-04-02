@@ -1,8 +1,7 @@
 ﻿using System;
-using System.CodeDom;
-using System.Security.Cryptography.X509Certificates;
+using Esb.Message;
 
-namespace Esb
+namespace Esb.Processing
 {
     public interface IProcessor<T> : IProcessor
     {

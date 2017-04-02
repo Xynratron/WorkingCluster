@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Esb
+namespace Esb.Message
 {
     /// <summary>
     /// an envelope encapsules a single message which can then be sent over the transportation layer

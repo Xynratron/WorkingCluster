@@ -1,4 +1,7 @@
-﻿namespace Esb.Transport
+﻿using Esb.Cluster;
+using Esb.Message;
+
+namespace Esb.Transport
 {
     /// <summary>
     /// Used to send a message over the transportation layer
