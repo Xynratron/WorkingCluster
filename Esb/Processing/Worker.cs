@@ -121,9 +121,4 @@ namespace Esb.Processing
 
         public bool IsController => _workerConfiguration.IsControllerNode;
     }
-
-    public enum WorkerStatus
-    {
-        Initialization, Starting, Started, Stopping, Stopped
-    }
 }

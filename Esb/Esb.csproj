@@ -66,6 +66,7 @@
     <Compile Include="Processing\IWorker.cs" />
     <Compile Include="Message\MessageQueue.cs" />
     <Compile Include="Cluster\NodeConfiguration.cs" />
+    <Compile Include="Processing\WorkerStatus.cs" />
     <Compile Include="Transport\INodeRoutingStrategy.cs" />
     <Compile Include="Transport\IReceiver.cs" />
     <Compile Include="Transport\IRouter.cs" />
