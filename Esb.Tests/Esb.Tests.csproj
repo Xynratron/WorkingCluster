@@ -50,6 +50,7 @@
     <Compile Include="ClusterConfigurationTests.cs" />
     <Compile Include="Helper.cs" />
     <Compile Include="MessageQueueTests.cs" />
+    <Compile Include="Processing\WorkerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Transport\AttributeRoutingTests.cs" />
     <Compile Include="Transport\RouterTests.cs" />
@@ -63,9 +64,7 @@
       <Name>Esb</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Worker\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

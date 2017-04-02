@@ -7,6 +7,7 @@ using Telerik.JustMock;
 using Telerik.JustMock.Helpers;
 using MyRouter = Esb.Transport.Router;
 
+
 namespace Esb.Tests.Transport
 {
     [TestFixture()]
@@ -122,6 +123,12 @@ namespace Esb.Tests.Transport
             router.Process(message);
 
             sender.Assert();
+        }
+
+        [Test()]
+        public void ProcessSyncTest()
+        {
+            throw new NotImplementedException();
         }
     }
 }
