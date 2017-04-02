@@ -1,1 +1,2 @@
 ﻿https://blogs.msdn.microsoft.com/digitalnetbizz/2004/01/31/create-assembly-in-memory-and-run-it/
+http://stackoverflow.com/questions/33912975/attach-in-memory-assembly-in-custom-appdomain
