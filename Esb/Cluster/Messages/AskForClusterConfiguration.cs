@@ -5,7 +5,7 @@ using System.Text;
 namespace Esb.Cluster.Messages
 {
     [ControllerMessage, SingleProcessingMessage]
-    public class StartClusterSync
+    public class AskForClusterConfiguration
     {
     }
 }

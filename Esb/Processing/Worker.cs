@@ -34,7 +34,9 @@ namespace Esb.Processing
 
         private void FindClusterAndEstablishCommunication()
         {
-           //_workerConfiguration.RootNodes
+            if (_workerConfiguration.ControllerNodes.Empty() && IsController)
+                return;
+
         }
 
         private void AddClusterCommunicationProcessors()

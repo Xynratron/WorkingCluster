@@ -1,4 +1,5 @@
 ﻿using System;
+using Esb.Cluster.Messages;
 using Esb.Message;
 using Esb.Processing;
 

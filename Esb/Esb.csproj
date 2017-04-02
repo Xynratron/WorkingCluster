@@ -42,6 +42,8 @@
     <Compile Include="Cluster\Messages\AddNodeToCluster.cs" />
     <Compile Include="Cluster\Messages\AskForClusterConfiguration.cs" />
     <Compile Include="Cluster\Messages\ClusterConfiguration.cs" />
+    <Compile Include="Cluster\Proccessors\AskForClusterConfiguration.cs" />
+    <Compile Include="Cluster\Proccessors\SendClusterConfiguration.cs" />
     <Compile Include="Message\BroadcastProcessingMessageAttribute.cs" />
     <Compile Include="Message\ControllerMessageAttribute.cs" />
     <Compile Include="Cluster\Messages\RemoveNodeFromCluster.cs" />
