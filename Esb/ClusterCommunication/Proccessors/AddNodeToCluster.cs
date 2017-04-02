@@ -10,6 +10,7 @@ namespace Esb.ClusterCommunication
     {
         public void Process(IEnvironment environment, Envelope envelope, AddNodeToCluster message)
         {
+            throw new NotImplementedException();
         }
 
         public Type ProcessingType => typeof(AddNodeToCluster);
