@@ -23,8 +23,6 @@ namespace Esb.Tests.Processing
            
         }
 
-      
-
         private Worker GetSingleWorker(WorkerConfiguration workerConfiguration, IRouter router = null, IMessageQueue messageQueue = null)
         {
             if (messageQueue == null)
@@ -78,13 +76,33 @@ namespace Esb.Tests.Processing
         [Test()]
         public void StartTest()
         {
-            throw new NotImplementedException();
+            var worker1 = GetSingleWorker(new WorkerConfiguration
+            {
+                Address = new Uri("http://localhost/1"),
+                ControllerNodes = new List<Uri>(new[] { new Uri("http://localhost/1"), new Uri("http://localhost/2") }),
+                IsControllerNode = true
+            }).WaitForStartUp();
+            worker1.Stop();
+            Assert.AreEqual(WorkerStatus.Stopped, worker1.Status);
+
+            worker1.Start();
+            Assert.AreEqual(WorkerStatus.Started, worker1.Status);
         }
 
         [Test()]
         public void StopTest()
         {
-            throw new NotImplementedException();
+            var worker1 = GetSingleWorker(new WorkerConfiguration
+            {
+                Address = new Uri("http://localhost/1"),
+                ControllerNodes = new List<Uri>(new[] { new Uri("http://localhost/1"), new Uri("http://localhost/2") }),
+                IsControllerNode = true
+            }).WaitForStartUp();
+            Assert.AreEqual(WorkerStatus.Started, worker1.Status);
+
+            worker1.Stop();
+            Assert.AreEqual(WorkerStatus.Stopped, worker1.Status);
+            
         }
     }
 }

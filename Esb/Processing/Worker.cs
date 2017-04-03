@@ -23,6 +23,7 @@ namespace Esb.Processing
 
         private readonly IClusterConfiguration _clusterConfiguration;
         private readonly WorkerConfiguration _workerConfiguration;
+        public WorkerStatus Status { get; private set; } = WorkerStatus.Stopped;
 
         public Worker(WorkerConfiguration workerConfiguration, IRouter router, IMessageQueue messageQueue)
         {
@@ -36,7 +37,6 @@ namespace Esb.Processing
             InitialStartUpAync();
         }
 
-        public WorkerStatus Status { get; private set; } = WorkerStatus.Stopped;
 
         private void InitialStartUpAync()
         {
@@ -100,7 +100,7 @@ namespace Esb.Processing
 
         public void Stop()
         {
-            if (Status != WorkerStatus.Starting)
+            if (Status != WorkerStatus.Started)
                 throw new Exception("Cannot stop worker, because it is not started");
 
             Status = WorkerStatus.Stopping;
