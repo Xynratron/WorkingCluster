@@ -5,9 +5,6 @@ using Esb.Cluster.Messages;
 using Esb.Cluster.Proccessors;
 using Esb.Message;
 using Esb.Transport;
-using AddNodeToCluster = Esb.Cluster.Proccessors.AddNodeToCluster;
-using AskForClusterConfiguration = Esb.Cluster.Proccessors.AskForClusterConfiguration;
-using ClusterConfiguration = Esb.Cluster.ClusterConfiguration;
 
 namespace Esb.Processing
 {
@@ -61,14 +58,14 @@ namespace Esb.Processing
 
         private void AddClusterCommunicationProcessors()
         {
-            LocalNode.Processors.Add(new RemoveNodeFromCluster());
-            LocalNode.Processors.Add(new AddNodeToCluster());
-            LocalNode.Processors.Add(new SyncClusterConfiguration());
+            LocalNode.Processors.Add(new RemoveNodeFromClusterProcessor());
+            LocalNode.Processors.Add(new AddNodeToClusterProcessor());
+            LocalNode.Processors.Add(new SyncClusterConfigurationProcessor());
 
             if (!IsController)
                 return;
 
-            LocalNode.Processors.Add(new AskForClusterConfiguration());
+            LocalNode.Processors.Add(new AskForClusterConfigurationProcessor());
         }
 
         private void CreateLocalNodeConfiguration()

@@ -5,7 +5,7 @@ using Esb.Processing;
 
 namespace Esb.Cluster.Proccessors
 {
-    public class AddNodeToCluster : IProcessor<AddNodeToCluster>
+    public class AddNodeToClusterProcessor : IProcessor<AddNodeToCluster>
     {
         public void Process(IEnvironment environment, Envelope envelope, AddNodeToCluster message)
         {
@@ -14,7 +14,7 @@ namespace Esb.Cluster.Proccessors
 
         public Type ProcessingType => typeof(AddNodeToCluster);
 
-        public IProcessor<AddNodeToCluster> GetInstance => new AddNodeToCluster();
+        public IProcessor<AddNodeToCluster> GetInstance => new AddNodeToClusterProcessor();
         object IProcessor.GetInstance => GetInstance;
     }
 }

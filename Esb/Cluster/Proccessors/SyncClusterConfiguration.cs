@@ -1,18 +1,19 @@
 ﻿using System;
+using Esb.Cluster.Messages;
 using Esb.Message;
 using Esb.Processing;
 
 namespace Esb.Cluster.Proccessors
 {
-    public class SyncClusterConfiguration : IProcessor<ClusterConfiguration>
+    public class SyncClusterConfigurationProcessor : IProcessor<ClusterConfigurationMessage>
     {
-        public void Process(IEnvironment environment, Envelope envelope, ClusterConfiguration message)
+        public void Process(IEnvironment environment, Envelope envelope, ClusterConfigurationMessage message)
         {
             throw new NotImplementedException();
         }
 
-        public Type ProcessingType => typeof(ClusterConfiguration);
-        public IProcessor<ClusterConfiguration> GetInstance => new SyncClusterConfiguration();
+        public Type ProcessingType => typeof(ClusterConfigurationMessage);
+        public IProcessor<ClusterConfigurationMessage> GetInstance => new SyncClusterConfigurationProcessor();
         object IProcessor.GetInstance => GetInstance;
     }
 }
