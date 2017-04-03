@@ -34,13 +34,21 @@ namespace Esb.Processing
             InitialStartUpAync();
         }
 
+        public void AddProcessor(IProcessor processor)
+        {
+            _clusterConfiguration.AddProcessorsToNode(LocalNode, processor);
+            _router.Process(new Envelope(new AddProcessorToNode(LocalNode, processor), Priority.Administrative));
+        }
+
+        public void RemoveProcessor(IProcessor processor)
+        {
+            _clusterConfiguration.RemoveProcessorsFromNode(LocalNode, processor);
+            _router.Process(new Envelope(new RemoveProcessorFromNode(LocalNode, processor), Priority.Administrative));
+        }
 
         private void InitialStartUpAync()
         {
-            Task.Factory.StartNew(() =>
-            {
-                Start();
-            });
+            Task.Factory.StartNew(Start);
         }
 
         private void FindClusterAndEstablishCommunication()

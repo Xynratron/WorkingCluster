@@ -37,6 +37,8 @@ namespace Esb.Cluster
                     {
                         foreach (var processor in processors)
                         {
+                            if (nodeConfiguration.Processors.Any(o => processor.GetType() == o.GetType()))
+                                continue;
                             nodeConfiguration.Processors.Add(processor);
                         }
                     }
@@ -54,7 +56,10 @@ namespace Esb.Cluster
                     {
                         foreach (var processor in processors)
                         {
-                            nodeConfiguration.Processors.Remove(processor);
+                            foreach (var nodeProcessor in nodeConfiguration.Processors.Where(o => processor.GetType() == o.GetType()))
+                            {
+                                nodeConfiguration.Processors.Remove(nodeProcessor);
+                            }
                         }
                     }
                 }

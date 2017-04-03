@@ -13,6 +13,5 @@ namespace Esb.Cluster.Messages
         }
         Uri Address { get; }
         ICollection<Type> Processors { get; }
-        Guid NodeId { get; }
     }
 }
