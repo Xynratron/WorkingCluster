@@ -10,7 +10,7 @@ namespace Esb.Cluster.Proccessors
         public Type ProcessingType { get; }
         public void Process(IEnvironment environment, Envelope envelope, AddProcessorToNode message)
         {
-            throw new NotImplementedException();
+            environment.LocalCluster.AddProcessorsToNode(message.Node, message.Processor);
         }
 
         public IProcessor<AddProcessorToNode> GetInstance => new AddProcessorToNodeProcessor();
