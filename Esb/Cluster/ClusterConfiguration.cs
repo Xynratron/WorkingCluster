@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Esb.Cluster.Messages;
 using Esb.Message;
 using Esb.Processing;
 
@@ -82,7 +83,7 @@ namespace Esb.Cluster
         }
 
         /// <summary>
-        /// Where is "local" defined? A Local processing means within the same proccess, not only the same machine. 
+        /// Indicates if the local node hat a processor for the message.
         /// </summary>
         /// <param name="message"></param>
         /// <returns></returns>
@@ -90,7 +91,8 @@ namespace Esb.Cluster
         {
             lock (Nodes)
             {
-               return  Nodes.Any(o => o.IsLocal);
+                var localNode = Nodes.FirstOrDefault(o => o.IsLocal);
+                return  localNode != null && localNode.Processors.Any(o => o.ProcessingType == message.MessageType);
             }
         }
 
@@ -113,8 +115,7 @@ namespace Esb.Cluster
 
 
         /// <summary>
-        /// ToDo Not defined what a Multi is.
-        /// For now, we return , if we have more Servers which wan to process this.
+        /// Detects the Attribute for MultiProcessing
         /// </summary>
         /// <param name="message"></param>
         /// <returns></returns>
@@ -122,7 +123,7 @@ namespace Esb.Cluster
         {
             lock (Nodes)
             {
-                return Nodes.Select(x => x.Processors.Where(o => o.ProcessingType == message.MessageType)).Count() > 1;
+                return message.MessageType.GetCustomAttributes(typeof(BroadcastProcessingMessageAttribute), true).Any();
             }
         }
     }

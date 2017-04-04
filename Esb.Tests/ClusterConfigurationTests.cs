@@ -135,7 +135,16 @@ namespace Esb.Tests
         [Test()]
         public void HasLocalProcessingTest()
         {
-            throw new NotImplementedException();
+            var node = Mock.Create<INodeConfiguration>();
+            Mock.Arrange(() => node.Address).Returns(_testUri);
+            Mock.Arrange(() => node.IsLocal).Returns(true);
+
+            var cluster = new ClusterConfiguration();
+            cluster.AddNode(node);
+            cluster.AddProcessorsToNode(node, new TestMessageProcessor());
+
+            cluster.HasLocalProcessing(new Envelope(new TestMessage(), Priority.Normal)).ShouldBeTrue();
+            cluster.HasLocalProcessing(new Envelope(new BroadcastTestMessage(), Priority.Normal)).ShouldBeFalse();
         }
 
         [Test()]
@@ -145,9 +154,19 @@ namespace Esb.Tests
         }
 
         [Test()]
-        public void IsMultiProcessableTest()
+        public void BroadcastMessagesShouldBeMultiprocessable()
         {
-            throw new NotImplementedException();
+            var node = Mock.Create<INodeConfiguration>();
+            Mock.Arrange(() => node.Address).Returns(_testUri);
+
+            var cluster = new ClusterConfiguration();
+            var broadcastMessage = new Envelope(new BroadcastTestMessage(), Priority.Normal);
+            var singleProcessingMessage = new Envelope(new SingleProcessingTestMessage(), Priority.Normal);
+            var messageWithoutAttribute = new Envelope(new TestMessage(), Priority.Normal);
+
+            cluster.IsMultiProcessable(broadcastMessage).ShouldBeTrue();
+            cluster.IsMultiProcessable(singleProcessingMessage).ShouldBeFalse();
+            cluster.IsMultiProcessable(messageWithoutAttribute).ShouldBeFalse();
         }
     }
 }
