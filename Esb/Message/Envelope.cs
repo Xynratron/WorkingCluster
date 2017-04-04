@@ -8,7 +8,7 @@ namespace Esb.Message
     /// </summary>
     public class Envelope
     {
-        public Envelope(object message, Priority priority, Guid? transactionId = null)
+        public Envelope(object message, Priority priority = Priority.Normal, Guid? transactionId = null)
         {
             CreatedOn = DateTime.Now;
             Id = Guid.NewGuid();
