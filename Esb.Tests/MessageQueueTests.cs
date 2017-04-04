@@ -2,6 +2,7 @@
 using System;
 using System.Linq;
 using Esb.Message;
+using Esb.Tests.Helper;
 using MyMessageQueue = Esb.Message.MessageQueue;
 
 namespace Esb.Tests

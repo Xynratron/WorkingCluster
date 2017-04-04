@@ -6,7 +6,7 @@ using Esb.Processing;
 using NUnit.Framework;
 using NUnit.Framework.Constraints;
 
-namespace Esb.Tests
+namespace Esb.Tests.Helper
 {
 
     #region Aliases to NUnit.Framework classes to improve our BDD syntax

@@ -9,6 +9,7 @@ using NUnit.Framework;
 using Telerik.JustMock;
 using Telerik.JustMock.Helpers;
 using Esb.Processing;
+using Esb.Tests.Helper;
 using Esb.Transport;
 
 

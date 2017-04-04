@@ -48,7 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ClusterConfigurationTests.cs" />
-    <Compile Include="Helper.cs" />
+    <Compile Include="Helper\Extensions.cs" />
     <Compile Include="Helper\TestMessageProcessor.cs" />
     <Compile Include="Helper\TestMessage.cs" />
     <Compile Include="MessageQueueTests.cs" />
