@@ -1,6 +1,7 @@
 ﻿using System;
 using Esb.Cluster;
 using Esb.Message;
+using Esb.Tests.Helper;
 using Esb.Transport;
 using NUnit.Framework;
 using Telerik.JustMock;
@@ -13,7 +14,6 @@ namespace Esb.Tests.Transport
     [TestFixture()]
     public class MyRouterTests
     {
-        public class TestMessage { }
 
         [Test()]
         public void SingleServerMessageWithLocalProcessingShouldEndInMessageQueue()

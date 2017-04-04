@@ -4,6 +4,7 @@ using System.Linq;
 using Esb.Cluster;
 using Esb.Message;
 using Esb.Processing;
+using Esb.Tests.Helper;
 using Telerik.JustMock;
 using Telerik.JustMock.Helpers;
 
@@ -14,18 +15,7 @@ namespace Esb.Tests
     {
         private static Uri _testUri = new Uri("tcp://dns");
 
-        private class TestMessage { }
-
-        private class TestMessageProcessor : IProcessor<TestMessage>
-        {
-            public Type ProcessingType => typeof(TestMessage);
-            public void Process(IEnvironment environment, Envelope envelope, TestMessage message)
-            {
-                throw new NotImplementedException();
-            }
-            public IProcessor<TestMessage> GetInstance => new TestMessageProcessor();
-            object IProcessor.GetInstance => GetInstance;
-        }
+      
 
         [Test()]
         public void AddNodeTest()
