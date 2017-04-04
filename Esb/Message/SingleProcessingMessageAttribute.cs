@@ -6,7 +6,7 @@ namespace Esb.Cluster.Messages
     /// This Message must only be sent to a single node
     /// </summary>
     [AttributeUsage(AttributeTargets.All, Inherited = false, AllowMultiple = false)]
-    sealed class SingleProcessingMessageAttribute : Attribute
+    public sealed class SingleProcessingMessageAttribute : Attribute
     {
     }
 }

@@ -6,7 +6,7 @@ namespace Esb.Cluster.Messages
     /// This Message must be sent all nodes, which have a processor for this node.
     /// </summary>
     [AttributeUsage(AttributeTargets.All, Inherited = false, AllowMultiple = false)]
-    sealed class BroadcastProcessingMessageAttribute : Attribute
+    public sealed class BroadcastProcessingMessageAttribute : Attribute
     {
     }
 }
