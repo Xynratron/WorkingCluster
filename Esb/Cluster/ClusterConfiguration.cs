@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Esb.Message;
 using Esb.Processing;
@@ -31,18 +32,25 @@ namespace Esb.Cluster
         {
             lock (Nodes)
             {
-                foreach (var nodeConfiguration in Nodes.Where(o => o.Address == node.Address))
+                var nodeConfiguration = Nodes.First(o => o.Address == node.Address);
+
+                lock (nodeConfiguration.Processors)
                 {
-                    lock (nodeConfiguration.Processors)
+                    foreach (var processor in processors)
                     {
-                        foreach (var processor in processors)
-                        {
-                            if (nodeConfiguration.Processors.Any(o => processor.GetType() == o.GetType()))
-                                continue;
-                            nodeConfiguration.Processors.Add(processor);
-                        }
+                        if (nodeConfiguration.Processors.Any(o => processor.GetType() == o.GetType()))
+                            continue;
+                        nodeConfiguration.Processors.Add(processor);
                     }
                 }
+            }
+        }
+
+        public void AddProcessorsToNode(INodeConfiguration node, params Type[] processors)
+        {
+            lock (Nodes)
+            {
+                AddProcessorsToNode(node, processors.Select(Activator.CreateInstance).Cast<IProcessor>().ToArray());
             }
         }
 
@@ -50,16 +58,23 @@ namespace Esb.Cluster
         {
             lock (Nodes)
             {
-                foreach (var nodeConfiguration in Nodes.Where(o => o.Address == node.Address))
+                RemoveProcessorsFromNode(node, processors.Select(o => o.ProcessingType).ToArray());
+            }
+        }
+
+        public void RemoveProcessorsFromNode(INodeConfiguration node, params Type[] processors)
+        {
+            lock (Nodes)
+            {
+                var nodeConfiguration = Nodes.First(o => o.Address == node.Address);
+
+                lock (nodeConfiguration.Processors)
                 {
-                    lock (nodeConfiguration.Processors)
+                    foreach (var processor in processors)
                     {
-                        foreach (var processor in processors)
+                        foreach (var nodeProcessor in nodeConfiguration.Processors.Where(o => processor == o.GetType()))
                         {
-                            foreach (var nodeProcessor in nodeConfiguration.Processors.Where(o => processor.GetType() == o.GetType()))
-                            {
-                                nodeConfiguration.Processors.Remove(nodeProcessor);
-                            }
+                            nodeConfiguration.Processors.Remove(nodeProcessor);
                         }
                     }
                 }
