@@ -7,14 +7,25 @@ using Esb.Processing;
 
 namespace Esb.Tests.Helper
 {
-    public class TestMessageProcessor : IProcessor<TestMessage>
+    public class TestMessageProcessor : BaseProcessor<TestMessage>
     {
-        public Type ProcessingType => typeof(TestMessage);
-        public void Process(IEnvironment environment, Envelope envelope, TestMessage message)
+        public override void Process(IEnvironment environment, Envelope envelope, TestMessage message)
         {
             throw new NotImplementedException();
         }
-        public IProcessor<TestMessage> GetInstance => new TestMessageProcessor();
-        object IProcessor.GetInstance => GetInstance;
+    }
+    public class BroadcastTestMessageProcessor : BaseProcessor<BroadcastTestMessage>
+    {
+        public override void Process(IEnvironment environment, Envelope envelope, BroadcastTestMessage message)
+        {
+            throw new NotImplementedException();
+        }
+    }
+    public class SingleProcessingTestMessageProcessor : BaseProcessor<SingleProcessingTestMessage>
+    {
+        public override void Process(IEnvironment environment, Envelope envelope, SingleProcessingTestMessage message)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

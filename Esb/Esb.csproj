@@ -58,6 +58,7 @@
     <Compile Include="Helpers.cs" />
     <Compile Include="Cluster\IClusterConfiguration.cs" />
     <Compile Include="Cluster\INodeConfiguration.cs" />
+    <Compile Include="Processing\BaseProcessor.cs" />
     <Compile Include="Processing\IProcessor.cs" />
     <Compile Include="Processing\IProcessorConfiguration.cs" />
     <Compile Include="Message\Envelope.cs" />
