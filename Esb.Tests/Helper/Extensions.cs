@@ -56,9 +56,14 @@ namespace Esb.Tests.Helper
             list.Should(Contains.Item(item));
         }
 
-         public static void ShouldContain<T>(this IEnumerable<T> list, Func<T, bool> item)
+         public static void ShouldContain<T>(this IEnumerable<T> list, Func<T, bool> func)
         {
-            Assert.IsTrue(list.Any());
+            Assert.IsTrue(list.Any(func));
+        }
+
+        public static void ShouldNotContain<T>(this IEnumerable<T> list, Func<T, bool> func)
+        {
+            Assert.IsFalse(list.Any(func));
         }
 
         public static void ShouldNotContain<T>(this IEnumerable<T> list, T item)
