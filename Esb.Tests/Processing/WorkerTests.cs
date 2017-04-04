@@ -17,11 +17,6 @@ namespace Esb.Tests.Processing
     [TestFixture()]
     public class WorkerTests
     {
-        [Test()]
-        public void WorkerTest()
-        {
-           
-        }
 
         private Worker GetSingleWorker(WorkerConfiguration workerConfiguration, IRouter router = null, IMessageQueue messageQueue = null)
         {
@@ -68,9 +63,15 @@ namespace Esb.Tests.Processing
         }
 
         [Test()]
-        public void InitialStartUpAyncTest()
+        public void AddProcessorTest()
         {
-            throw new NotImplementedException();
+            var worker1 = GetSingleWorker(new WorkerConfiguration
+            {
+                Address = new Uri("http://localhost/1"),
+                ControllerNodes = new List<Uri>(new[] { new Uri("http://localhost/1"), new Uri("http://localhost/2") }),
+                IsControllerNode = true
+            }).WaitForStartUp();
+
         }
 
         [Test()]
@@ -104,5 +105,7 @@ namespace Esb.Tests.Processing
             Assert.AreEqual(WorkerStatus.Stopped, worker1.Status);
             
         }
+
+     
     }
 }
