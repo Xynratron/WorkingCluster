@@ -150,7 +150,27 @@ namespace Esb.Tests
         [Test()]
         public void GetClusterNodesForMessageTest()
         {
-            throw new NotImplementedException();
+            var node1 = Mock.Create<INodeConfiguration>();
+            Mock.Arrange(() => node1.Address).Returns(new Uri("tcp://Node1"));
+            var node2 = Mock.Create<INodeConfiguration>();
+            Mock.Arrange(() => node2.Address).Returns(new Uri("tcp://Node2"));
+            var node3 = Mock.Create<INodeConfiguration>();
+            Mock.Arrange(() => node3.Address).Returns(new Uri("tcp://Node3"));
+
+            var cluster = new ClusterConfiguration();
+            cluster.AddNode(node1);
+            cluster.AddProcessorsToNode(node1, new TestMessageProcessor());
+            cluster.AddNode(node2);
+            cluster.AddProcessorsToNode(node2, new BroadcastTestMessageProcessor());
+            cluster.AddNode(node3);
+            cluster.AddProcessorsToNode(node3, new TestMessageProcessor());
+
+            var clusterNodesWithProcessor = cluster.GetClusterNodesForMessage(new Envelope(new TestMessage())).ToList();
+
+            clusterNodesWithProcessor.ShouldContain(o => o.Address == node1.Address);
+            clusterNodesWithProcessor.ShouldNotContain(o => o.Address == node2.Address);
+            clusterNodesWithProcessor.ShouldContain(o => o.Address == node3.Address);
+
         }
 
         [Test()]
@@ -160,9 +180,9 @@ namespace Esb.Tests
             Mock.Arrange(() => node.Address).Returns(_testUri);
 
             var cluster = new ClusterConfiguration();
-            var broadcastMessage = new Envelope(new BroadcastTestMessage(), Priority.Normal);
-            var singleProcessingMessage = new Envelope(new SingleProcessingTestMessage(), Priority.Normal);
-            var messageWithoutAttribute = new Envelope(new TestMessage(), Priority.Normal);
+            var broadcastMessage = new Envelope(new BroadcastTestMessage());
+            var singleProcessingMessage = new Envelope(new SingleProcessingTestMessage());
+            var messageWithoutAttribute = new Envelope(new TestMessage());
 
             cluster.IsMultiProcessable(broadcastMessage).ShouldBeTrue();
             cluster.IsMultiProcessable(singleProcessingMessage).ShouldBeFalse();
