@@ -42,6 +42,7 @@ namespace Esb.Tests.Processing
                  }).WaitForStartUp();
             Assert.NotNull(worker);
         }
+
         [Test()]
         public void DoubleMasterWorkerAsControllerHaveSameConfiguration()
         {
@@ -61,6 +62,7 @@ namespace Esb.Tests.Processing
             
             Assert.NotNull(worker1);
             Assert.NotNull(worker2);
+            Assert.Inconclusive();
         }
 
         [Test()]
@@ -72,6 +74,7 @@ namespace Esb.Tests.Processing
                 ControllerNodes = new List<Uri>(new[] { new Uri("http://localhost/1"), new Uri("http://localhost/2") }),
                 IsControllerNode = true
             }).WaitForStartUp();
+            Assert.Inconclusive();
 
         }
 
@@ -104,9 +107,9 @@ namespace Esb.Tests.Processing
 
             worker1.Stop();
             Assert.AreEqual(WorkerStatus.Stopped, worker1.Status);
-            
         }
 
-     
+
+
     }
 }
