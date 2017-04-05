@@ -21,6 +21,7 @@ namespace Esb.Message
                     else
                     {
                         _list.Add(message);
+                        RaiseMessageArrived();
                     }
                 }
             }
@@ -76,6 +77,13 @@ namespace Esb.Message
             }
         }
 
+        private void RaiseMessageArrived()
+        {
+            var handler = OnMessageArived;
+            handler?.Invoke(this, new EventArgs());
+        }
+
+        public event EventHandler<EventArgs> OnMessageArived;
         public void RerouteMessages(Type messageType)
         {
             throw new NotImplementedException();

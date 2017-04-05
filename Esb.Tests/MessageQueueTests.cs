@@ -86,5 +86,31 @@ namespace Esb.Tests
         {
             throw new NotImplementedException();
         }
+
+
+        [Test()]
+        public void EventOnMessageArivedMustOccurOnMessageAdd()
+        {
+            var messageQueue = new MyMessageQueue();
+            var messageArrivedWasFires = false;
+            messageQueue.OnMessageArived += (sender, args) => messageArrivedWasFires = true;
+
+            messageQueue.Add(new Envelope(new TestMessage()));
+
+            messageArrivedWasFires.ShouldBeTrue();
+        }
+
+        [Test()]
+        public void EventOnMessageArivedShouldNotOccurForSuspendedMessages()
+        {
+            var messageQueue = new MyMessageQueue();
+            var messageArrivedWasFires = false;
+            messageQueue.OnMessageArived += (sender, args) => messageArrivedWasFires = true;
+            messageQueue.SuspendMessages(typeof(TestMessage));
+
+            messageQueue.Add(new Envelope(new TestMessage()));
+
+            messageArrivedWasFires.ShouldBeFalse();
+        }
     }
 }
