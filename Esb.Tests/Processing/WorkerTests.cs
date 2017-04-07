@@ -111,24 +111,59 @@ namespace Esb.Tests.Processing
         }
 
         [Test()]
-        public void MessagesMustBeReroutedIfNoProcessorForThisMessageExists()
+        public void MessagesMustBe_Suspended_Rerouted_IfProcessorIsRemoved_AndMessageIsSingleProcessing()
         {
             var messageQueue = Mock.Create<IMessageQueue>();
 
-            messageQueue.Arrange(o => o.RerouteMessages(typeof(TestMessage))).MustBeCalled();
-            var worker1 = GetSingleWorker(new WorkerConfiguration
-            {
-                Address = new Uri("http://localhost/1"),
-                ControllerNodes = new List<Uri>(new[] { new Uri("http://localhost/1"), new Uri("http://localhost/2") }),
-                IsControllerNode = true
-            }, null, messageQueue).WaitForStartUp();
+            messageQueue.Arrange(o => o.RerouteMessages(typeof(SingleProcessingTestMessage))).MustBeCalled();
+            messageQueue.Arrange(o => o.SuspendMessages(typeof(SingleProcessingTestMessage))).MustBeCalled();
+            messageQueue.Arrange(o => o.ResumeMessages(typeof(SingleProcessingTestMessage))).OccursNever();
+
+            var worker1 = GetSingleWorker(GetWorkerConfiguration(), null, messageQueue).WaitForStartUp();
             
-            var proc = Mock.Create<BaseProcessor<TestMessage>>();
+            var proc = new SingleProcessingTestMessageProcessor();
+
             worker1.AddProcessor(proc);
 
             worker1.RemoveProcessor(proc);
 
             messageQueue.AssertAll();
+            Assert.Inconclusive();
+        }
+
+        [Test()]
+        public void MessagesMustBe_Suspended_Removed_IfProcessorIsRemoved_AndMessageIsBroadcastProcessing()
+        {
+            var messageQueue = Mock.Create<IMessageQueue>();
+
+            messageQueue.Arrange(o => o.RerouteMessages(typeof(BroadcastTestMessage))).MustBeCalled();
+            messageQueue.Arrange(o => o.SuspendMessages(typeof(BroadcastTestMessage))).OccursNever();
+            messageQueue.Arrange(o => o.ResumeMessages(typeof(BroadcastTestMessage))).OccursNever();
+            messageQueue.Arrange(o => o.RemoveMessages(typeof(BroadcastTestMessage))).MustBeCalled();
+
+            var worker1 = GetSingleWorker(GetWorkerConfiguration(), null, messageQueue).WaitForStartUp();
+
+            var proc = new BroadcastTestMessageProcessor();
+
+            worker1.AddProcessor(proc);
+
+            worker1.RemoveProcessor(proc);
+
+            messageQueue.AssertAll();
+            Assert.Inconclusive();
+        }
+
+
+        
+
+        private WorkerConfiguration GetWorkerConfiguration()
+        {
+            return new WorkerConfiguration
+            {
+                Address = new Uri("http://localhost/1"),
+                ControllerNodes = new List<Uri>(new[] {new Uri("http://localhost/1"), new Uri("http://localhost/2")}),
+                IsControllerNode = true
+            };
         }
     }
 }
