@@ -22,7 +22,7 @@ namespace Esb.Tests
         [Test()]
         public void AddTest()
         {
-            var message1 = new Envelope(new Message1(), Priority.Normal);
+            var message1 = new Envelope(new Message1());
             var messageQueue = new MyMessageQueue();
 
             messageQueue.Add(message1);
@@ -33,7 +33,7 @@ namespace Esb.Tests
         [Test()]
         public void GetNextMessageTest()
         {
-            var message1 = new Envelope(new Message1(), Priority.Normal);
+            var message1 = new Envelope(new Message1());
             var messageQueue = new MyMessageQueue();
 
             messageQueue.Add(message1);
@@ -44,8 +44,8 @@ namespace Esb.Tests
         [Test()]
         public void SuspendMessagesTest()
         {
-            var message1 = new Envelope(new Message1(), Priority.Normal);
-            var message2 = new Envelope(new Message2(), Priority.Normal);
+            var message1 = new Envelope(new Message1());
+            var message2 = new Envelope(new Message2());
             var messageQueue = new MyMessageQueue();
 
             messageQueue.Add(message1);
@@ -58,20 +58,20 @@ namespace Esb.Tests
         [Test()]
         public void SuspendedMessagIsNotQueued()
         {
-            var message1 = new Envelope(new Message1(), Priority.Normal);
+            var message1 = new Envelope(new Message1());
             var messageQueue = new MyMessageQueue();
 
             messageQueue.SuspendMessages(typeof(Message1));
             messageQueue.Add(message1);
 
-            messageQueue.Messages.All(o => o.MessageType != typeof(Message1)).Should(Be.True);
+            messageQueue.Messages.All(o => o.MessageType != typeof(Message1)).ShouldBeTrue();
         }
 
         [Test()]
         public void ResumeMessagesTest()
         {
             var message1 = new Envelope(new Message1(), Priority.High);
-            var message2 = new Envelope(new Message2(), Priority.Normal);
+            var message2 = new Envelope(new Message2());
             var messageQueue = new MyMessageQueue();
 
             messageQueue.Add(message1);
