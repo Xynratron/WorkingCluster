@@ -88,5 +88,10 @@ namespace Esb.Message
         {
             throw new NotImplementedException();
         }
+
+        public void RemoveMessages(Type messageType)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

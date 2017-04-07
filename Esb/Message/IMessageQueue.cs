@@ -11,6 +11,7 @@ namespace Esb.Message
         void SuspendMessages(Type messageType);
         void ResumeMessages(Type messageType);
         void RerouteMessages(Type messageType);
+        void RemoveMessages(Type messageType);
 
         event EventHandler<EventArgs> OnMessageArived;
     }
