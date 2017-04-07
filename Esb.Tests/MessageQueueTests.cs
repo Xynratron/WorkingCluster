@@ -92,13 +92,11 @@ namespace Esb.Tests
             router.Arrange(o => o.Process(message1)).MustBeCalled();
 
             var messageQueue = new MyMessageQueue();
-
+            messageQueue.Router = router;
             messageQueue.Add(message1);
             messageQueue.RerouteMessages(typeof(TestMessage));
 
             router.AssertAll();
-
-            Assert.Inconclusive("Router must be assigned to MessageQueue.");
         }
 
         [Test()]
