@@ -1,2 +1,4 @@
 ﻿https://blogs.msdn.microsoft.com/digitalnetbizz/2004/01/31/create-assembly-in-memory-and-run-it/
 http://stackoverflow.com/questions/33912975/attach-in-memory-assembly-in-custom-appdomain
+
+Not only messages should be Single/Broadcast, Processors should also say, if the processing must be done on a single node or any processor can be informed...
