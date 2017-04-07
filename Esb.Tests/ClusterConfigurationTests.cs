@@ -71,7 +71,7 @@ namespace Esb.Tests
             cluster.AddNode(node);
             cluster.AddProcessorsToNode(node, processor);
 
-            cluster.Nodes.Any(o => o.Processors.Any(p => p == processor)).ShouldBeTrue();
+            cluster.Nodes.Any(o => o.Processors.Any(p => p.GetType() == processor.GetType())).ShouldBeTrue();
         }
 
         [Test()]
@@ -84,8 +84,7 @@ namespace Esb.Tests
             var cluster = new ClusterConfiguration();
             cluster.AddNode(node);
             cluster.AddProcessorsToNode(node, processor.GetType());
-
-            cluster.Nodes.Any(o => o.Processors.Any(p => p == processor)).ShouldBeFalse();
+            
             cluster.Nodes.Any(o => o.Processors.Any(p => p.GetType() == processor.GetType())).ShouldBeTrue();
         }
 
@@ -99,14 +98,12 @@ namespace Esb.Tests
             var cluster = new ClusterConfiguration();
             cluster.AddNode(node);
             cluster.AddProcessorsToNode(node, processor);
+            
+            cluster.Nodes.Any(o => o.Processors.Any(p => p.GetType() == processor.GetType())).ShouldBeTrue();
 
-            cluster.Nodes.Any(o => o.Processors.Any(p => p == processor)).ShouldBeTrue();
-
-            var node2 = Mock.Create<INodeConfiguration>();
-            Mock.Arrange(() => node2.Address).Returns(_testUri);
-
-            cluster.RemoveNode(node2);
-            cluster.Nodes.Any(o => o.Processors.Any(p => p == processor)).ShouldBeFalse();
+            cluster.RemoveProcessorsFromNode(node, processor);
+            
+            cluster.Nodes.Any(o => o.Processors.Any(p => p.GetType() == processor.GetType())).ShouldBeFalse();
         }
 
         [Test()]
@@ -119,16 +116,11 @@ namespace Esb.Tests
             var cluster = new ClusterConfiguration();
             cluster.AddNode(node);
             cluster.AddProcessorsToNode(node, typeof(TestMessageProcessor));
-
-            cluster.Nodes.Any(o => o.Processors.Any(p => p == processor)).ShouldBeFalse();
+            
             cluster.Nodes.Any(o => o.Processors.Any(p => p.GetType() == processor.GetType())).ShouldBeTrue();
-
-            var node2 = Mock.Create<INodeConfiguration>();
-            Mock.Arrange(() => node2.Address).Returns(_testUri);
-
-            cluster.RemoveNode(node2);
-
-            cluster.Nodes.Any(o => o.Processors.Any(p => p == processor)).ShouldBeFalse();
+            
+            cluster.RemoveProcessorsFromNode(node, typeof(TestMessageProcessor));
+            
             cluster.Nodes.Any(o => o.Processors.Any(p => p.GetType() == processor.GetType())).ShouldBeFalse();
         }
 
