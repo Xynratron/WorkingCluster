@@ -42,6 +42,7 @@ namespace Esb.Processing
 
         public void RemoveProcessor(IProcessor processor)
         {
+            _messageQueue.SuspendMessages(processor.ProcessingType);
             _clusterConfiguration.RemoveProcessorsFromNode(LocalNode, processor);
             _router.Process(new Envelope(new RemoveProcessorFromNode(LocalNode, processor), Priority.Administrative));
         }
@@ -125,5 +126,32 @@ namespace Esb.Processing
         }
 
         public bool IsController => _workerConfiguration.IsControllerNode;
+
+
+        public class SyncMessageWorkFactory
+        {
+            private IMessageQueue _messageQueue;
+            public SyncMessageWorkFactory(IMessageQueue messageQueue)
+            {
+                _messageQueue = messageQueue;
+            }
+            public bool MustCancelWork = false;
+
+            private bool inFetching = false;
+
+            public void StartWithMessageProcessing()
+            {
+                inFetching = true;
+                var message = _messageQueue.GetNextMessage();
+                while (message != null)
+                {
+
+                    message = _messageQueue.GetNextMessage();
+                }
+                inFetching = false;
+            }
+        }
     }
+
+    
 }

@@ -19,7 +19,8 @@ namespace Esb.Tests.Processing
     public class WorkerTests
     {
 
-        private Worker GetSingleWorker(WorkerConfiguration workerConfiguration, IRouter router = null, IMessageQueue messageQueue = null)
+        private Worker GetSingleWorker(WorkerConfiguration workerConfiguration, IRouter router = null,
+            IMessageQueue messageQueue = null)
         {
             if (messageQueue == null)
                 messageQueue = Mock.Create<IMessageQueue>();
@@ -34,12 +35,12 @@ namespace Esb.Tests.Processing
         public void SingleWorkerAsControllerIsStartingUp()
         {
             var worker =
-                 GetSingleWorker(new WorkerConfiguration
-                 {
-                     Address = new Uri("http://localhost"),
-                     ControllerNodes = new List<Uri>(),
-                     IsControllerNode = true
-                 }).WaitForStartUp();
+                GetSingleWorker(new WorkerConfiguration
+                {
+                    Address = new Uri("http://localhost"),
+                    ControllerNodes = new List<Uri>(),
+                    IsControllerNode = true
+                }).WaitForStartUp();
             Assert.NotNull(worker);
         }
 
@@ -47,19 +48,19 @@ namespace Esb.Tests.Processing
         public void DoubleMasterWorkerAsControllerHaveSameConfiguration()
         {
             var worker1 = GetSingleWorker(new WorkerConfiguration
-               {
-                   Address = new Uri("http://localhost/1"),
-                   ControllerNodes = new List<Uri>(new [] {new Uri("http://localhost/1"), new Uri("http://localhost/2") }),
-                   IsControllerNode = true
-               }).WaitForStartUp();
+            {
+                Address = new Uri("http://localhost/1"),
+                ControllerNodes = new List<Uri>(new[] {new Uri("http://localhost/1"), new Uri("http://localhost/2")}),
+                IsControllerNode = true
+            }).WaitForStartUp();
 
             var worker2 = GetSingleWorker(new WorkerConfiguration
             {
                 Address = new Uri("http://localhost/2"),
-                ControllerNodes = new List<Uri>(new[] { new Uri("http://localhost/1"), new Uri("http://localhost/2") }),
+                ControllerNodes = new List<Uri>(new[] {new Uri("http://localhost/1"), new Uri("http://localhost/2")}),
                 IsControllerNode = true
             }).WaitForStartUp();
-            
+
             Assert.NotNull(worker1);
             Assert.NotNull(worker2);
             Assert.Inconclusive();
@@ -71,7 +72,7 @@ namespace Esb.Tests.Processing
             var worker1 = GetSingleWorker(new WorkerConfiguration
             {
                 Address = new Uri("http://localhost/1"),
-                ControllerNodes = new List<Uri>(new[] { new Uri("http://localhost/1"), new Uri("http://localhost/2") }),
+                ControllerNodes = new List<Uri>(new[] {new Uri("http://localhost/1"), new Uri("http://localhost/2")}),
                 IsControllerNode = true
             }).WaitForStartUp();
             Assert.Inconclusive();
@@ -84,7 +85,7 @@ namespace Esb.Tests.Processing
             var worker1 = GetSingleWorker(new WorkerConfiguration
             {
                 Address = new Uri("http://localhost/1"),
-                ControllerNodes = new List<Uri>(new[] { new Uri("http://localhost/1"), new Uri("http://localhost/2") }),
+                ControllerNodes = new List<Uri>(new[] {new Uri("http://localhost/1"), new Uri("http://localhost/2")}),
                 IsControllerNode = true
             }).WaitForStartUp();
             worker1.Stop();
@@ -100,7 +101,7 @@ namespace Esb.Tests.Processing
             var worker1 = GetSingleWorker(new WorkerConfiguration
             {
                 Address = new Uri("http://localhost/1"),
-                ControllerNodes = new List<Uri>(new[] { new Uri("http://localhost/1"), new Uri("http://localhost/2") }),
+                ControllerNodes = new List<Uri>(new[] {new Uri("http://localhost/1"), new Uri("http://localhost/2")}),
                 IsControllerNode = true
             }).WaitForStartUp();
             Assert.AreEqual(WorkerStatus.Started, worker1.Status);
@@ -109,7 +110,25 @@ namespace Esb.Tests.Processing
             Assert.AreEqual(WorkerStatus.Stopped, worker1.Status);
         }
 
+        [Test()]
+        public void MessagesMustBeReroutedIfNoProcessorForThisMessageExists()
+        {
+            var messageQueue = Mock.Create<IMessageQueue>();
 
+            messageQueue.Arrange(o => o.RerouteMessages(typeof(TestMessage))).MustBeCalled();
+            var worker1 = GetSingleWorker(new WorkerConfiguration
+            {
+                Address = new Uri("http://localhost/1"),
+                ControllerNodes = new List<Uri>(new[] { new Uri("http://localhost/1"), new Uri("http://localhost/2") }),
+                IsControllerNode = true
+            }, null, messageQueue).WaitForStartUp();
+            
+            var proc = Mock.Create<BaseProcessor<TestMessage>>();
+            worker1.AddProcessor(proc);
 
+            worker1.RemoveProcessor(proc);
+
+            messageQueue.AssertAll();
+        }
     }
 }

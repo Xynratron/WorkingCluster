@@ -11,7 +11,7 @@ namespace Esb.Tests.Helper
     {
         public override void Process(IEnvironment environment, Envelope envelope, TestMessage message)
         {
-            throw new NotImplementedException();
+            
         }
     }
     public class BroadcastTestMessageProcessor : BaseProcessor<BroadcastTestMessage>
