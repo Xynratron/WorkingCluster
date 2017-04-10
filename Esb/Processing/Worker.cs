@@ -22,13 +22,13 @@ namespace Esb.Processing
         private readonly WorkerConfiguration _workerConfiguration;
         public WorkerStatus Status { get; private set; } = WorkerStatus.Stopped;
 
-        public Worker(WorkerConfiguration workerConfiguration, IRouter router, IMessageQueue messageQueue)
+        public Worker(WorkerConfiguration workerConfiguration, IClusterConfiguration clusterConfiguration, IRouter router, IMessageQueue messageQueue)
         {
             _workerConfiguration = workerConfiguration;
             _router = router;
             _messageQueue = messageQueue;
-            _clusterConfiguration = new ClusterConfiguration();
-            
+            _clusterConfiguration = clusterConfiguration;
+
             CreateLocalNodeConfiguration();
             AddClusterCommunicationProcessors();
             InitialStartUpAync();

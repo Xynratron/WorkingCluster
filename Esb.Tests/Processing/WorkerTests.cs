@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Esb.Cluster;
 using Esb.Message;
 using NUnit.Framework;
 using Telerik.JustMock;
@@ -28,7 +29,7 @@ namespace Esb.Tests.Processing
             if (router == null)
                 router = Mock.Create<IRouter>();
 
-            return new Worker(workerConfiguration, router, messageQueue);
+            return new Worker(workerConfiguration, new ClusterConfiguration(),  router, messageQueue);
         }
 
         [Test()]
