@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Esb.Cluster;
 using Esb.Cluster.Messages;
@@ -31,7 +32,7 @@ namespace Esb.Processing
 
             CreateLocalNodeConfiguration();
             AddClusterCommunicationProcessors();
-            InitialStartUpAync();
+            //InitialStartUpAync();
         }
 
         public void AddProcessor(IProcessor processor)
@@ -57,7 +58,7 @@ namespace Esb.Processing
             if (_workerConfiguration.ControllerNodes.Empty() && IsController)
                 return;
 
-            foreach (var controllerNode in _workerConfiguration.ControllerNodes)
+            foreach (var controllerNode in _workerConfiguration.ControllerNodes.Where(o => o != LocalNode.Address))
             {
                 if (_router.ProcessSync(new Envelope(new AskForClusterConfiguration(), Priority.Administrative),
                     new NodeConfiguration(this, controllerNode)))

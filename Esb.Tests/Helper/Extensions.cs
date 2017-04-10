@@ -94,6 +94,18 @@ namespace Esb.Tests.Helper
 
     public static class WorkerHelper
     {
+        public static IWorker WaitForStartUp(this IWorker worker)
+        {
+            var sw = new Stopwatch();
+            while (worker.Status != WorkerStatus.Started)
+            {
+                if (sw.ElapsedMilliseconds > 30000)
+                    throw new TimeoutException("Waited for 30 seconds but worker did not come up.");
+                System.Threading.Thread.Sleep(1);
+            }
+            return worker;
+        }
+
         public static Worker WaitForStartUp(this Worker worker)
         {
             var sw = new Stopwatch();

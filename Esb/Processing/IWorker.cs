@@ -8,5 +8,8 @@ namespace Esb.Processing
         bool IsController { get; }
 
         WorkerStatus Status { get; }
+
+        void Start();
+        void Stop();
     }
 }

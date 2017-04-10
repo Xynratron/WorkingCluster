@@ -82,7 +82,15 @@ namespace Esb.Transport
         /// <returns></returns>
         public bool ProcessSync(Envelope message, INodeConfiguration targetNode)
         {
-            throw new NotImplementedException();
+            try
+            {
+                Sender.Send(message, targetNode);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
         }
     }
 }
