@@ -108,6 +108,8 @@ namespace Esb.Tests.Helper
 
         public static Worker WaitForStartUp(this Worker worker)
         {
+            if (worker.Status == WorkerStatus.Stopped)
+                worker.Start();
             var sw = new Stopwatch();
             while (worker.Status != WorkerStatus.Started)
             {

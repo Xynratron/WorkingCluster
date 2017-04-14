@@ -88,8 +88,7 @@ namespace Esb.Tests.Processing
                 Address = new Uri("http://localhost/1"),
                 ControllerNodes = new List<Uri>(new[] {new Uri("http://localhost/1"), new Uri("http://localhost/2")}),
                 IsControllerNode = true
-            }).WaitForStartUp();
-            worker1.Stop();
+            });
             Assert.AreEqual(WorkerStatus.Stopped, worker1.Status);
 
             worker1.Start();
