@@ -59,7 +59,7 @@ namespace Esb.Cluster
         {
             lock (Nodes)
             {
-                RemoveProcessorsFromNode(node, processors.Select(o => o.ProcessingType).ToArray());
+                RemoveProcessorsFromNode(node, processors.Select(o => o.GetType()).ToArray());
             }
         }
 
@@ -73,7 +73,7 @@ namespace Esb.Cluster
                 {
                     foreach (var processor in processors)
                     {
-                        foreach (var nodeProcessor in nodeConfiguration.Processors.Where(o => processor == o.GetType()))
+                        foreach (var nodeProcessor in nodeConfiguration.Processors.Where(o => processor == o.GetType()).ToList())
                         {
                             nodeConfiguration.Processors.Remove(nodeProcessor);
                         }

@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Esb.Transport;
 
 namespace Esb.Message
 {
     public class MessageQueue : IMessageQueue
     {
         private readonly List<Envelope> _list = new List<Envelope>();
+
         public void Add(Envelope message)
         {
             lock (_list)
@@ -40,6 +42,7 @@ namespace Esb.Message
                 }
             }
         }
+
         public Envelope GetNextMessage()
         {
             lock (_list)
@@ -84,9 +87,30 @@ namespace Esb.Message
         }
 
         public event EventHandler<EventArgs> OnMessageArived;
+
         public void RerouteMessages(Type messageType)
         {
-            throw new NotImplementedException();
+            if (Router == null)
+                throw new Exception("Cannot reroute any message, because Router is null.");
+            lock (_list)
+            {
+                foreach (var envelope in _list.Where(o => o.MessageType == messageType).ToList())
+                {
+                    _list.Remove(envelope);
+                    Router.Process(envelope);
+                }
+            }
         }
+
+        public void RemoveMessages(Type messageType)
+        {
+            lock (_list)
+            {
+                _list.RemoveAll(o => o.MessageType == messageType);
+                _suspendMessages.Remove(messageType);
+            }
+        }
+
+        public IRouter Router { get; set; }
     }
 }

@@ -46,6 +46,10 @@ namespace Esb.Processing
             _messageQueue.SuspendMessages(processor.ProcessingType);
             _clusterConfiguration.RemoveProcessorsFromNode(LocalNode, processor);
             _router.Process(new Envelope(new RemoveProcessorFromNode(LocalNode, processor), Priority.Administrative));
+            if (LocalNode.Processors.All(o => o.ProcessingType != processor.ProcessingType))
+                _messageQueue.RerouteMessages(processor.ProcessingType);
+            else
+                _messageQueue.ResumeMessages(processor.ProcessingType);
         }
 
         private void InitialStartUpAync()

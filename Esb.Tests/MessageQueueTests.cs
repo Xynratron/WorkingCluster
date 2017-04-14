@@ -3,6 +3,9 @@ using System;
 using System.Linq;
 using Esb.Message;
 using Esb.Tests.Helper;
+using Esb.Transport;
+using Telerik.JustMock;
+using Telerik.JustMock.Helpers;
 using MyMessageQueue = Esb.Message.MessageQueue;
 
 namespace Esb.Tests
@@ -84,10 +87,31 @@ namespace Esb.Tests
         [Test()]
         public void RerouteMessagesTest()
         {
-            throw new NotImplementedException();
+            var router = Mock.Create<IRouter>();
+            var message1 = new Envelope(new TestMessage(), Priority.High);
+            router.Arrange(o => o.Process(message1)).MustBeCalled();
+
+            var messageQueue = new MyMessageQueue();
+            messageQueue.Router = router;
+            messageQueue.Add(message1);
+            messageQueue.RerouteMessages(typeof(TestMessage));
+
+            router.AssertAll();
         }
 
+        [Test()]
+        public void RemoveMessagesTest()
+        {
+            var message1 = new Envelope(new TestMessage(), Priority.High);
+            
+            var messageQueue = new MyMessageQueue();
 
+            messageQueue.Add(message1);
+            messageQueue.RemoveMessages(typeof(TestMessage));
+
+            messageQueue.Messages.Any().ShouldBeFalse();
+        }
+        
         [Test()]
         public void EventOnMessageArivedMustOccurOnMessageAdd()
         {
