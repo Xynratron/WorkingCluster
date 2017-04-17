@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using Esb.Cluster;
 using Esb.Cluster.Messages;
@@ -12,7 +13,7 @@ namespace Esb.Processing
     /// <summary>
     /// The local worker process; has a own node with configuration
     /// </summary>
-    public class Worker : IWorker
+    public partial class Worker : IWorker
     {
         public INodeConfiguration LocalNode { get; private set; }
         
@@ -133,30 +134,6 @@ namespace Esb.Processing
         public bool IsController => _workerConfiguration.IsControllerNode;
 
 
-        public class SyncMessageWorkFactory
-        {
-            private IMessageQueue _messageQueue;
-            public SyncMessageWorkFactory(IMessageQueue messageQueue)
-            {
-                _messageQueue = messageQueue;
-            }
-            public bool MustCancelWork = false;
-
-            private bool inFetching = false;
-
-            public void StartWithMessageProcessing()
-            {
-                inFetching = true;
-                var message = _messageQueue.GetNextMessage();
-                while (message != null)
-                {
-
-                    message = _messageQueue.GetNextMessage();
-                }
-                inFetching = false;
-            }
-        }
+  
     }
-
-    
 }
