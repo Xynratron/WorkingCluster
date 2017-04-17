@@ -16,8 +16,14 @@ namespace Esb.Processing
         object GetInstance { get; }
     }
 
-    public interface IEnvironment
+    public class ProcessorStubForConfiguration : IProcessor
     {
-        IClusterConfiguration LocalCluster { get; }
+        public ProcessorStubForConfiguration(Type processingType)
+        {
+            ProcessingType = processingType;
+        }
+
+        public Type ProcessingType { get; }
+        public object GetInstance => this;
     }
 }

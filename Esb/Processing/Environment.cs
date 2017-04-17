@@ -7,8 +7,18 @@ namespace Esb.Processing
 {
     public class Environment : IEnvironment
     {
+        public Environment()
+        {
+            Logger = new EnvironmentLogger();
+        }
         public IClusterConfiguration LocalCluster { get; set; }
         public ILog Logger { get; set; }
+    }
+
+    public interface IEnvironment
+    {
+        IClusterConfiguration LocalCluster { get; }
+        ILog Logger { get; set; }
     }
 
     public interface ILog
@@ -24,40 +34,40 @@ namespace Esb.Processing
 
     public class EnvironmentLogger : ILog
     {
-        private static Logger logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         public void Debug(Envelope envelope, string message)
         {
-            logger.Debug(message);
+            Logger.Debug(message);
         }
 
         public void Error(Envelope envelope, string message)
         {
-            logger.Error(message);
+            Logger.Error(message);
         }
 
         public void Error(Envelope envelope, Exception exception, string message)
         {
-            logger.Error(exception, message);
+            Logger.Error(exception, message);
         }
 
         public void Info(Envelope envelope, string message)
         {
-            logger.Info(message);
+            Logger.Info(message);
         }
 
         public void Trace(Envelope envelope, string message)
         {
-            logger.Trace(message);
+            Logger.Trace(message);
         }
 
         public void Warn(Envelope envelope, string message)
         {
-            logger.Warn(message);
+            Logger.Warn(message);
         }
 
         public void Warn(Envelope envelope, Exception exception, string message)
         {
-            logger.Warn(exception, message);
+            Logger.Warn(exception, message);
         }
     }
 }

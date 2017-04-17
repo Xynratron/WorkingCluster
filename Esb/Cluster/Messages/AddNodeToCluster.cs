@@ -10,8 +10,10 @@ namespace Esb.Cluster.Messages
         {
             Address = nodeToAdd.Address;
             Processors = new List<Type>(nodeToAdd.Processors.Select(o => o.ProcessingType));
+            IsControllerNode = nodeToAdd.IsControllerNode;
         }
-        Uri Address { get; }
-        ICollection<Type> Processors { get; }
+        public Uri Address { get; }
+        public ICollection<Type> Processors { get; }
+        public bool IsControllerNode { get; }
     }
 }
