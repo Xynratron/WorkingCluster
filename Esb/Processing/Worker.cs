@@ -13,49 +13,46 @@ namespace Esb.Processing
     /// <summary>
     /// The local worker process; has a own node with configuration
     /// </summary>
-    public partial class Worker : IWorker
+    public class Worker : IWorker
     {
         public INodeConfiguration LocalNode { get; private set; }
-        
-        private IMessageQueue _messageQueue;
-        private readonly IRouter _router;
+        public IRouter Router { get; set; }
+        public bool IsController => _workerConfiguration.IsControllerNode;
+        public IMessageQueue MessageQueue { get; set; }
+        public IClusterConfiguration ClusterConfiguration { get; set; }
 
-        private readonly IClusterConfiguration _clusterConfiguration;
         private readonly WorkerConfiguration _workerConfiguration;
+
+        private SyncMessageWorkFactory _workingFactory;
+
         public WorkerStatus Status { get; private set; } = WorkerStatus.Stopped;
 
         public Worker(WorkerConfiguration workerConfiguration, IClusterConfiguration clusterConfiguration, IRouter router, IMessageQueue messageQueue)
         {
             _workerConfiguration = workerConfiguration;
-            _router = router;
-            _messageQueue = messageQueue;
-            _clusterConfiguration = clusterConfiguration;
+            Router = router;
+            MessageQueue = messageQueue;
+            ClusterConfiguration = clusterConfiguration;
 
             CreateLocalNodeConfiguration();
             AddClusterCommunicationProcessors();
-            //InitialStartUpAync();
         }
 
         public void AddProcessor(IProcessor processor)
         {
-            _clusterConfiguration.AddProcessorsToNode(LocalNode, processor);
-            _router.Process(new Envelope(new AddProcessorToNode(LocalNode, processor), Priority.Administrative));
+            ClusterConfiguration.AddProcessorsToNode(LocalNode, processor);
+            Router.Process(new Envelope(new AddProcessorToNode(LocalNode, processor), Priority.Administrative));
         }
 
         public void RemoveProcessor(IProcessor processor)
         {
-            _messageQueue.SuspendMessages(processor.ProcessingType);
-            _clusterConfiguration.RemoveProcessorsFromNode(LocalNode, processor);
-            _router.Process(new Envelope(new RemoveProcessorFromNode(LocalNode, processor), Priority.Administrative));
+            MessageQueue.SuspendMessages(processor.ProcessingType);
+            ClusterConfiguration.RemoveProcessorsFromNode(LocalNode, processor);
+            Router.Process(new Envelope(new RemoveProcessorFromNode(LocalNode, processor), Priority.Administrative));
             if (LocalNode.Processors.All(o => o.ProcessingType != processor.ProcessingType))
-                _messageQueue.RerouteMessages(processor.ProcessingType);
+                MessageQueue.RerouteMessages(processor.ProcessingType);
             else
-                _messageQueue.ResumeMessages(processor.ProcessingType);
-        }
-
-        private void InitialStartUpAync()
-        {
-            Task.Factory.StartNew(Start);
+                MessageQueue.ResumeMessages(processor.ProcessingType);
         }
 
         private void FindClusterAndEstablishCommunication()
@@ -65,7 +62,7 @@ namespace Esb.Processing
 
             foreach (var controllerNode in _workerConfiguration.ControllerNodes.Where(o => o != LocalNode.Address))
             {
-                if (_router.ProcessSync(new Envelope(new AskForClusterConfiguration(), Priority.Administrative),
+                if (Router.ProcessSync(new Envelope(new AskForClusterConfiguration(), Priority.Administrative),
                     new NodeConfiguration(this, controllerNode)))
                     break;
             }
@@ -93,6 +90,10 @@ namespace Esb.Processing
             if (Status != WorkerStatus.Stopped)
                 throw new Exception("Cannot start worker, because it is not stopped");
             Status = WorkerStatus.Initialization;
+
+            _workingFactory = new SyncMessageWorkFactory(MessageQueue, LocalNode, new Environment {LocalCluster = ClusterConfiguration});
+            _workingFactory.StartWithMessageProcessing();
+
             FindClusterAndEstablishCommunication();
             Status = WorkerStatus.Starting;
             SetLocalNodeOnline();
@@ -102,12 +103,12 @@ namespace Esb.Processing
 
         private void SetLocalNodeOnline()
         {
-            _clusterConfiguration.AddNode(LocalNode);
+            ClusterConfiguration.AddNode(LocalNode);
         }
 
         private void SendOnlineMessage()
         {
-            _router.Process(new Envelope(new Cluster.Messages.AddNodeToCluster(LocalNode), Priority.Administrative));
+            Router.Process(new Envelope(new Cluster.Messages.AddNodeToCluster(LocalNode), Priority.Administrative));
         }
 
         public void Stop()
@@ -116,6 +117,9 @@ namespace Esb.Processing
                 throw new Exception("Cannot stop worker, because it is not started");
 
             Status = WorkerStatus.Stopping;
+            _workingFactory.MustCancelWork = false;
+            _workingFactory = null;
+
             SendOfflineMessage();
             SetLocalNodeOffline();
             Status = WorkerStatus.Stopped;
@@ -123,17 +127,12 @@ namespace Esb.Processing
 
         private void SetLocalNodeOffline()
         {
-            _clusterConfiguration.RemoveNode(LocalNode);
+            ClusterConfiguration.RemoveNode(LocalNode);
         }
 
         private void SendOfflineMessage()
         {
-            _router.Process(new Envelope(new RemoveNodeFromClusterMessage(LocalNode), Priority.Administrative));
+            Router.Process(new Envelope(new RemoveNodeFromClusterMessage(LocalNode), Priority.Administrative));
         }
-
-        public bool IsController => _workerConfiguration.IsControllerNode;
-
-
-  
     }
 }
