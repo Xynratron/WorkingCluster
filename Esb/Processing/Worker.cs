@@ -91,7 +91,7 @@ namespace Esb.Processing
                 throw new Exception("Cannot start worker, because it is not stopped");
             Status = WorkerStatus.Initialization;
 
-            _workingFactory = new SyncMessageWorkFactory(MessageQueue, LocalNode, new Environment {LocalCluster = ClusterConfiguration});
+            _workingFactory = new SyncMessageWorkFactory(MessageQueue, LocalNode, new Environment(Router, LocalNode.Address) {LocalCluster = ClusterConfiguration});
             _workingFactory.StartWithMessageProcessing();
 
             FindClusterAndEstablishCommunication();

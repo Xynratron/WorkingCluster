@@ -113,8 +113,8 @@ namespace Esb.Tests
             worker2.Start();
             worker2.WaitForStartUp();
 
-            _workerConfigurationForTest[workerUri1].ClusterConfig.Nodes.Count.ShouldEqual(2);
-            _workerConfigurationForTest[workerUri2].ClusterConfig.Nodes.Count.ShouldEqual(2);
+            _workerConfigurationForTest[workerUri1].ClusterConfig.Nodes.Count().ShouldEqual(2);
+            _workerConfigurationForTest[workerUri2].ClusterConfig.Nodes.Count().ShouldEqual(2);
 
             Console.ReadLine();
 

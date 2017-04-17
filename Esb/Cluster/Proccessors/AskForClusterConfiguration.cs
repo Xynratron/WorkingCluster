@@ -9,7 +9,12 @@ namespace Esb.Cluster.Proccessors
     {
         public void Process(IEnvironment environment, Envelope envelope, AskForClusterConfiguration message)
         {
-            throw new NotImplementedException();
+            environment.Logger.Debug(envelope, "Start of AskForClusterConfigurationProcessor");
+
+            var cc = new ClusterConfigurationMessage(environment.LocalAddress, environment.LocalCluster.Nodes);
+            environment.Process(new Envelope(cc, Priority.Administrative, envelope.TransactionId));
+
+            environment.Logger.Debug(envelope, "End of AskForClusterConfigurationProcessor");
         }
 
         public Type ProcessingType => typeof(AskForClusterConfiguration);

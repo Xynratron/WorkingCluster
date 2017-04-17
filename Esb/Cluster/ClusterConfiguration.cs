@@ -9,14 +9,16 @@ namespace Esb.Cluster
 {
     public class ClusterConfiguration : IClusterConfiguration
     {
-        public List<INodeConfiguration> Nodes { get; } = new List<INodeConfiguration>();
+        private readonly List<INodeConfiguration> _nodes = new List<INodeConfiguration>();
+
+        public IEnumerable<INodeConfiguration> Nodes => _nodes;
 
         public void AddNode(INodeConfiguration node)
         {
             lock (Nodes)
             {
                 if (Nodes.All(o => o.Address != node.Address))
-                    Nodes.Add(node);
+                    _nodes.Add(node);
             }
         }
 
@@ -25,7 +27,7 @@ namespace Esb.Cluster
             lock (Nodes)
             {
                 if (Nodes.Any(o => o.Address == node.Address))
-                    Nodes.RemoveAll(o => o.Address == node.Address);
+                    _nodes.RemoveAll(o => o.Address == node.Address);
             }
         }
 

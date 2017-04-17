@@ -16,5 +16,6 @@ namespace Esb.Cluster
         bool HasLocalProcessing(Envelope message);
         IEnumerable<INodeConfiguration> GetClusterNodesForMessage(Envelope message);
         bool IsMultiProcessable(Envelope message);
+        IEnumerable<INodeConfiguration> Nodes { get; }
     }
 }
