@@ -27,6 +27,7 @@ namespace Esb.Tests
                 {
                     _receiversForNodes[n.Address].Receive(envelope);
                 });
+            _workerConfigurationForTest = new Dictionary<Uri, WorkerConfigurationForTest>();
         }
 
         private Dictionary<Uri, IReceiver> _receiversForNodes;
@@ -37,6 +38,7 @@ namespace Esb.Tests
         {
             _receiversForNodes = null;
             _sender = null;
+            _workerConfigurationForTest = null;
         }
 
         private IReceiver GetMockedReceiverForAddress(Uri node)
@@ -63,7 +65,26 @@ namespace Esb.Tests
                 messageQueue,
                 clusterConfig,
                 _sender, new SelectRandomNodeRoutingStrategy());
+            _workerConfigurationForTest.Add(configuration.Address, new WorkerConfigurationForTest
+            {
+                ClusterConfig = clusterConfig,
+                MessageQueue = messageQueue,
+                Router = router,
+                WorkerAddress = configuration.Address,
+                WorkerConfiguration = configuration
+            });
             return new Worker(configuration, clusterConfig, router, messageQueue);
+        }
+
+        private Dictionary<Uri, WorkerConfigurationForTest> _workerConfigurationForTest;
+
+        class WorkerConfigurationForTest
+        {
+            public Uri WorkerAddress { get; set; }
+            public MessageQueue MessageQueue { get; set; }
+            public Router Router { get; set; }
+            public ClusterConfiguration ClusterConfig { get; set; }
+            public WorkerConfiguration WorkerConfiguration { get; set; }
         }
 
         [Test()]
@@ -80,15 +101,20 @@ namespace Esb.Tests
             });
             
             var worker2 = GetWorker(new WorkerConfiguration
-                 {
-                     Address = workerUri2, IsControllerNode = true, ControllerNodes = new[] { workerUri1, workerUri2 }.ToList()
-                 });
+            {
+                Address = workerUri2,
+                IsControllerNode = true,
+                ControllerNodes = new[] { workerUri1, workerUri2 }.ToList()
+            });
 
             worker1.Start();
             worker1.WaitForStartUp();
 
             worker2.Start();
             worker2.WaitForStartUp();
+
+            _workerConfigurationForTest[workerUri1].ClusterConfig.Nodes.Count.ShouldEqual(2);
+            _workerConfigurationForTest[workerUri2].ClusterConfig.Nodes.Count.ShouldEqual(2);
 
             Console.ReadLine();
 
