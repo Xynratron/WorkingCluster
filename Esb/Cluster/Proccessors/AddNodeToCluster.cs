@@ -20,7 +20,7 @@ namespace Esb.Cluster.Proccessors
             }
             environment.LocalCluster.AddNode(node);
 
-            environment.Process(new Envelope(new BroadcastClusterConfigurationProcessor(), Priority.Administrative));
+            environment.Process(new Envelope(new BroadcastClusterConfigurationMessage(), Priority.Administrative));
 
             environment.Logger.Debug(envelope, "End of AddNodeToClusterProcessor.Process");
         }

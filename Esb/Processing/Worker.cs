@@ -88,13 +88,14 @@ namespace Esb.Processing
 
         private void AddClusterCommunicationProcessors()
         {
-            LocalNode.Processors.Add(new RemoveNodeFromClusterProcessor());
-            LocalNode.Processors.Add(new AddNodeToClusterProcessor());
+            LocalNode.Processors.Add(new PingProcessor());
             LocalNode.Processors.Add(new SyncClusterConfigurationProcessor());
 
             if (!IsController)
                 return;
 
+            LocalNode.Processors.Add(new RemoveNodeFromClusterProcessor());
+            LocalNode.Processors.Add(new AddNodeToClusterProcessor());
             LocalNode.Processors.Add(new BroadcastClusterConfigurationProcessor());
         }
 
@@ -112,21 +113,17 @@ namespace Esb.Processing
             _workingFactory = new SyncMessageWorkFactory(MessageQueue, LocalNode, new Environment(Router, LocalNode.Address) {LocalCluster = ClusterConfiguration});
             _workingFactory.StartWithMessageProcessing();
 
-            FindClusterAndEstablishCommunication();
             Status = WorkerStatus.Starting;
             SetLocalNodeOnline();
-            SendOnlineMessage();
+
+            FindClusterAndEstablishCommunication();
+            
             Status = WorkerStatus.Started;
         }
 
         private void SetLocalNodeOnline()
         {
             ClusterConfiguration.AddNode(LocalNode);
-        }
-
-        private void SendOnlineMessage()
-        {
-            Router.Process(new Envelope(new AddNodeToClusterMessage(LocalNode), Priority.Administrative));
         }
 
         public void Stop()

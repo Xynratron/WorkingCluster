@@ -17,7 +17,7 @@ namespace Esb.Cluster.Proccessors
                 environment.Logger.Debug(envelope, "Message was sent from local node, we ignore it.");
                 return;
             }
-            foreach (var clusterNode in environment.LocalCluster.Nodes)
+            foreach (var clusterNode in message.Nodes)
             {
                 environment.LocalCluster.AddNode(clusterNode);
                 environment.LocalCluster.AddProcessorsToNode(clusterNode, clusterNode.Processors.ToArray());

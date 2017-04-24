@@ -115,17 +115,6 @@ namespace Esb.Tests
 
             _workerConfigurationForTest[workerUri1].ClusterConfig.Nodes.Count().ShouldEqual(2);
             _workerConfigurationForTest[workerUri2].ClusterConfig.Nodes.Count().ShouldEqual(2);
-
-            Console.ReadLine();
-
-            Assert.Inconclusive();
-            //    var node = Mock.Create<INodeConfiguration>();
-            //    Mock.Arrange(() => node.Address).Returns(_testUri);
-
-            //    var cluster = new ClusterConfiguration();
-            //    cluster.AddNode(node);
-
-            //    cluster.Nodes.ShouldContain(node);
         }
     }
 }

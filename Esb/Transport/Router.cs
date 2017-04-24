@@ -30,8 +30,8 @@ namespace Esb.Transport
 
         private bool ProcessMultiSeverMessage(Envelope message)
         {
-            var processingNodes = ClusterConfiguration.GetClusterNodesForMessage(message);
-            foreach (var node in ClusterConfiguration.GetClusterNodesForMessage(message))
+            var processingNodes = ClusterConfiguration.GetClusterNodesForMessage(message).ToList();
+            foreach (var node in processingNodes)
             {
                 if (node.IsLocal)
                     MessageQueue.Add(message);

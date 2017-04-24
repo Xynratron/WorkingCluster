@@ -4,6 +4,7 @@ using System.Linq;
 
 namespace Esb.Cluster.Messages
 {
+    [ControllerMessage, SingleProcessingMessage]
     public class AddNodeToClusterMessage
     {
         public AddNodeToClusterMessage(INodeConfiguration nodeToAdd)

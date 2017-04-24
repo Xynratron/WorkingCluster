@@ -24,8 +24,10 @@ namespace Esb.Tests.Processing
             IMessageQueue messageQueue = null)
         {
             if (messageQueue == null)
+            {
                 messageQueue = Mock.Create<IMessageQueue>();
-
+                messageQueue.Arrange(o => o.GetNextMessage()).Returns(o => null);
+            }
             if (router == null)
                 router = Mock.Create<IRouter>();
 
