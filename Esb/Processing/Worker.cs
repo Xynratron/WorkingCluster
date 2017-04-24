@@ -76,7 +76,7 @@ namespace Esb.Processing
 
         private void AddLocalNodeToCluster(Uri controllerNode)
         {
-            Router.ProcessSync(new Envelope(new AddNodeToCluster(LocalNode), Priority.Administrative),
+            Router.ProcessSync(new Envelope(new AddNodeToClusterMessage(LocalNode), Priority.Administrative),
                 new NodeConfiguration(null, controllerNode));
         }
 
@@ -95,7 +95,7 @@ namespace Esb.Processing
             if (!IsController)
                 return;
 
-            LocalNode.Processors.Add(new AskForClusterConfigurationProcessor());
+            LocalNode.Processors.Add(new BroadcastClusterConfigurationProcessor());
         }
 
         private void CreateLocalNodeConfiguration()
@@ -126,7 +126,7 @@ namespace Esb.Processing
 
         private void SendOnlineMessage()
         {
-            Router.Process(new Envelope(new Cluster.Messages.AddNodeToCluster(LocalNode), Priority.Administrative));
+            Router.Process(new Envelope(new AddNodeToClusterMessage(LocalNode), Priority.Administrative));
         }
 
         public void Stop()

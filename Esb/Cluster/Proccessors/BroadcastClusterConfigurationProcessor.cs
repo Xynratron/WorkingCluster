@@ -5,9 +5,9 @@ using Esb.Processing;
 
 namespace Esb.Cluster.Proccessors
 {
-    public class BroadcastClusterConfigurationProcessor : IProcessor<BroadcastClusterConfiguration>
+    public class BroadcastClusterConfigurationProcessor : IProcessor<BroadcastClusterConfigurationMessage>
     {
-        public void Process(IEnvironment environment, Envelope envelope, BroadcastClusterConfiguration message)
+        public void Process(IEnvironment environment, Envelope envelope, BroadcastClusterConfigurationMessage message)
         {
             environment.Logger.Debug(envelope, "Start of BroadcastClusterConfigurationProcessor");
 
@@ -17,8 +17,8 @@ namespace Esb.Cluster.Proccessors
             environment.Logger.Debug(envelope, "End of BroadcastClusterConfigurationProcessor");
         }
 
-        public Type ProcessingType => typeof(BroadcastClusterConfiguration);
-        public IProcessor<BroadcastClusterConfiguration> GetInstance => new BroadcastClusterConfigurationProcessor();
+        public Type ProcessingType => typeof(BroadcastClusterConfigurationMessage);
+        public IProcessor<BroadcastClusterConfigurationMessage> GetInstance => new BroadcastClusterConfigurationProcessor();
         object IProcessor.GetInstance => GetInstance;
     }
 }

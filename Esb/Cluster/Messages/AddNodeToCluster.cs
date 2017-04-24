@@ -4,9 +4,9 @@ using System.Linq;
 
 namespace Esb.Cluster.Messages
 {
-    public class AddNodeToCluster
+    public class AddNodeToClusterMessage
     {
-        public AddNodeToCluster(INodeConfiguration nodeToAdd)
+        public AddNodeToClusterMessage(INodeConfiguration nodeToAdd)
         {
             Address = nodeToAdd.Address;
             Processors = new List<Type>(nodeToAdd.Processors.Select(o => o.ProcessingType));

@@ -6,9 +6,9 @@ using Esb.Processing;
 
 namespace Esb.Cluster.Proccessors
 {
-    public class AddNodeToClusterProcessor : IProcessor<AddNodeToCluster>
+    public class AddNodeToClusterProcessor : IProcessor<AddNodeToClusterMessage>
     {
-        public void Process(IEnvironment environment, Envelope envelope, AddNodeToCluster message)
+        public void Process(IEnvironment environment, Envelope envelope, AddNodeToClusterMessage message)
         {
             environment.Logger.Debug(envelope, "Start of AddNodeToClusterProcessor.Process");
 
@@ -25,9 +25,9 @@ namespace Esb.Cluster.Proccessors
             environment.Logger.Debug(envelope, "End of AddNodeToClusterProcessor.Process");
         }
 
-        public Type ProcessingType => typeof(AddNodeToCluster);
+        public Type ProcessingType => typeof(AddNodeToClusterMessage);
 
-        public IProcessor<AddNodeToCluster> GetInstance => new AddNodeToClusterProcessor();
+        public IProcessor<AddNodeToClusterMessage> GetInstance => new AddNodeToClusterProcessor();
         object IProcessor.GetInstance => GetInstance;
     }
 }
