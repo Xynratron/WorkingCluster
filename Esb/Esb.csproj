@@ -45,7 +45,9 @@
     <Compile Include="Cluster\Messages\AddNodeToCluster.cs" />
     <Compile Include="Cluster\Messages\AskForClusterConfiguration.cs" />
     <Compile Include="Cluster\Messages\ClusterConfiguration.cs" />
-    <Compile Include="Cluster\Proccessors\AskForClusterConfiguration.cs" />
+    <Compile Include="Cluster\Messages\PingMessage.cs" />
+    <Compile Include="Cluster\Proccessors\BroadcastClusterConfigurationProcessor.cs" />
+    <Compile Include="Cluster\Proccessors\PingProcessor.cs" />
     <Compile Include="Cluster\Proccessors\SyncClusterConfiguration.cs" />
     <Compile Include="Message\BroadcastProcessingMessageAttribute.cs" />
     <Compile Include="Message\ControllerMessageAttribute.cs" />

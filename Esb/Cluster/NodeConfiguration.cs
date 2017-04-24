@@ -12,7 +12,7 @@ namespace Esb.Cluster
             _worker = worker;
             Address = address;
             Processors = new List<IProcessor>();
-            IsControllerNode = _worker.IsController;
+            IsControllerNode = _worker != null && _worker.IsController;
         }
 
         public NodeConfiguration(Uri address, bool nodeIsController)

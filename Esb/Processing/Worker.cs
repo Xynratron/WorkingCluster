@@ -57,15 +57,33 @@ namespace Esb.Processing
 
         private void FindClusterAndEstablishCommunication()
         {
-            if (_workerConfiguration.ControllerNodes.Empty() && IsController)
-                return;
+            if (_workerConfiguration.ControllerNodes.Empty())
+            {
+                if (IsController)
+                    return;
+                throw new NotImplementedException("No Controllers found and I'm not configured as Controller-Node");
+            }
 
             foreach (var controllerNode in _workerConfiguration.ControllerNodes.Where(o => o != LocalNode.Address))
             {
-                if (Router.ProcessSync(new Envelope(new AskForClusterConfiguration(), Priority.Administrative),
-                    new NodeConfiguration(this, controllerNode)))
+                if (IsControllerOnline(controllerNode))
+                {
+                    AddLocalNodeToCluster(controllerNode);
                     break;
+                }
             }
+        }
+
+        private void AddLocalNodeToCluster(Uri controllerNode)
+        {
+            Router.ProcessSync(new Envelope(new AddNodeToCluster(LocalNode), Priority.Administrative),
+                new NodeConfiguration(null, controllerNode));
+        }
+
+        private bool IsControllerOnline(Uri controllerNode)
+        {
+            return Router.ProcessSync(new Envelope(new PingMessage(), Priority.Administrative),
+                new NodeConfiguration(null, controllerNode));
         }
 
         private void AddClusterCommunicationProcessors()
