@@ -140,7 +140,16 @@ namespace Esb.Tests
         [Test()]
         public void PriorityOfMessagesShouldBeHandledInCorrectOrder()
         {
-            Assert.Inconclusive("TBD");
+            var messageQueue = new MyMessageQueue();
+            messageQueue.Add(new Envelope(new TestMessage(), Priority.Low));
+            messageQueue.Add(new Envelope(new TestMessage(), Priority.Normal));
+            messageQueue.Add(new Envelope(new TestMessage(), Priority.High));
+            messageQueue.Add(new Envelope(new TestMessage(), Priority.Administrative));
+            
+            messageQueue.GetNextMessage().Priority.ShouldEqual(Priority.Administrative);
+            messageQueue.GetNextMessage().Priority.ShouldEqual(Priority.High);
+            messageQueue.GetNextMessage().Priority.ShouldEqual(Priority.Normal);
+            messageQueue.GetNextMessage().Priority.ShouldEqual(Priority.Low);
         }
     }
 }

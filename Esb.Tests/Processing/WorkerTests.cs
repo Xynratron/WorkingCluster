@@ -26,7 +26,7 @@ namespace Esb.Tests.Processing
             if (messageQueue == null)
             {
                 messageQueue = Mock.Create<IMessageQueue>();
-                messageQueue.Arrange(o => o.GetNextMessage()).Returns(o => null);
+                messageQueue.Arrange<IMessageQueue, Envelope>(o => o.GetNextMessage()).Returns<Envelope>((Envelope)null);
             }
             if (router == null)
                 router = Mock.Create<IRouter>();
@@ -77,9 +77,9 @@ namespace Esb.Tests.Processing
                 Address = new Uri("http://localhost/1"),
                 ControllerNodes = new List<Uri>(new[] {new Uri("http://localhost/1"), new Uri("http://localhost/2")}),
                 IsControllerNode = true
-            }).WaitForStartUp();
-            Assert.Inconclusive();
-
+            });
+            
+            worker1.WaitForStartUp();
         }
 
         [Test()]
@@ -120,6 +120,7 @@ namespace Esb.Tests.Processing
             messageQueue.Arrange(o => o.RerouteMessages(typeof(SingleProcessingTestMessage))).MustBeCalled();
             messageQueue.Arrange(o => o.SuspendMessages(typeof(SingleProcessingTestMessage))).MustBeCalled();
             messageQueue.Arrange(o => o.ResumeMessages(typeof(SingleProcessingTestMessage))).OccursNever();
+            messageQueue.Arrange(o => o.GetNextMessage()).Returns((Envelope)null);
 
             var worker1 = GetSingleWorker(GetWorkerConfiguration(), null, messageQueue).WaitForStartUp();
             
@@ -142,6 +143,7 @@ namespace Esb.Tests.Processing
             messageQueue.Arrange(o => o.SuspendMessages(typeof(BroadcastTestMessage))).OccursNever();
             messageQueue.Arrange(o => o.ResumeMessages(typeof(BroadcastTestMessage))).OccursNever();
             messageQueue.Arrange(o => o.RemoveMessages(typeof(BroadcastTestMessage))).MustBeCalled();
+            messageQueue.Arrange(o => o.GetNextMessage()).Returns((Envelope) null);
 
             var worker1 = GetSingleWorker(GetWorkerConfiguration(), null, messageQueue).WaitForStartUp();
 

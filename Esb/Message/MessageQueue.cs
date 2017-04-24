@@ -47,9 +47,9 @@ namespace Esb.Message
         {
             lock (_list)
             {
-                var result = _list.FirstOrDefault();
+                var result = _list.OrderByDescending(o => o.Priority).FirstOrDefault();
                 if (result != null)
-                    _list.RemoveAt(0);
+                    _list.Remove(result);
                 return result;
             }
         }
