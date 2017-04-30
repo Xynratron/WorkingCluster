@@ -43,32 +43,12 @@ namespace Esb.Tests.Processing
                     Address = new Uri("http://localhost"),
                     ControllerNodes = new List<Uri>(),
                     IsControllerNode = true
-                }).WaitForStartUp();
+                });
+            worker.Start();
+            worker.WaitForStartUp();
             Assert.NotNull(worker);
         }
-
-        [Test()]
-        public void DoubleMasterWorkerAsControllerHaveSameConfiguration()
-        {
-            var worker1 = GetSingleWorker(new WorkerConfiguration
-            {
-                Address = new Uri("http://localhost/1"),
-                ControllerNodes = new List<Uri>(new[] {new Uri("http://localhost/1"), new Uri("http://localhost/2")}),
-                IsControllerNode = true
-            }).WaitForStartUp();
-
-            var worker2 = GetSingleWorker(new WorkerConfiguration
-            {
-                Address = new Uri("http://localhost/2"),
-                ControllerNodes = new List<Uri>(new[] {new Uri("http://localhost/1"), new Uri("http://localhost/2")}),
-                IsControllerNode = true
-            }).WaitForStartUp();
-
-            Assert.NotNull(worker1);
-            Assert.NotNull(worker2);
-            Assert.Inconclusive();
-        }
-
+        
         [Test()]
         public void AddProcessorTest()
         {
@@ -113,6 +93,7 @@ namespace Esb.Tests.Processing
         }
 
         [Test()]
+        [Ignore("must be redesigned")]
         public void MessagesMustBe_Suspended_Rerouted_IfProcessorIsRemoved_AndMessageIsSingleProcessing()
         {
             var messageQueue = Mock.Create<IMessageQueue>();
@@ -135,6 +116,7 @@ namespace Esb.Tests.Processing
         }
 
         [Test()]
+        [Ignore("must be redesigned")]
         public void MessagesMustBe_Suspended_Removed_IfProcessorIsRemoved_AndMessageIsBroadcastProcessing()
         {
             var messageQueue = Mock.Create<IMessageQueue>();
