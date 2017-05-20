@@ -126,9 +126,9 @@ namespace Esb.Tests.Transport
         }
 
         [Test()]
-        public void ProcessSyncTest()
+        public void ProcessMessagesInSyncTest()
         {
-            throw new NotImplementedException();
+            Assert.Inconclusive();
         }
     }
 }
