@@ -48,6 +48,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ClusterConfigurationTests.cs" />
+    <Compile Include="DynamicAssemblyLoading.cs" />
+    <Compile Include="Helper\CodeCompiling.cs" />
     <Compile Include="Helper\Extensions.cs" />
     <Compile Include="Helper\TestMessageProcessor.cs" />
     <Compile Include="Helper\TestMessage.cs" />
