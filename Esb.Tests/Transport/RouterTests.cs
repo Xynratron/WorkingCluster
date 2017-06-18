@@ -18,7 +18,7 @@ namespace Esb.Tests.Transport
         [Test()]
         public void SingleServerMessageWithLocalProcessingShouldEndInMessageQueue()
         {
-            var message = new Envelope(new TestMessage(), Priority.Normal);
+            var message = new Envelope(new TestMessage());
 
             var messageQueue = Mock.Create<IMessageQueue>();
             messageQueue.Arrange(o => o.Add(message)).MustBeCalled();
@@ -35,7 +35,7 @@ namespace Esb.Tests.Transport
         [Test()]
         public void SingleServerMessageWithoutLocalProcessingShouldBeSentToAnotherNode()
         {
-            var message = new Envelope(new TestMessage(), Priority.Normal);
+            var message = new Envelope(new TestMessage());
 
             var sender = Mock.Create<ISender>();
             sender.Arrange(o => o.Send(message)).MustBeCalled();
@@ -51,7 +51,7 @@ namespace Esb.Tests.Transport
         [Test()]
         public void MultiServerMessageWithoutLocalProcessingShouldBeSentAnyOtherNode()
         {
-            var message = new Envelope(new TestMessage(), Priority.Normal);
+            var message = new Envelope(new TestMessage());
             var node1 = Mock.Create<INodeConfiguration>();
             var node2 = Mock.Create<INodeConfiguration>();
 
@@ -79,7 +79,7 @@ namespace Esb.Tests.Transport
         [Test()]
         public void MultiServerMessageWithLocalProcessingShouldBeSentAnyOtherNodeAnMessageQueue()
         {
-            var message = new Envelope(new TestMessage(), Priority.Normal);
+            var message = new Envelope(new TestMessage());
             var localNode = Mock.Create<INodeConfiguration>();
             localNode.Arrange(o => o.IsLocal).Returns(true);
             var node1 = Mock.Create<INodeConfiguration>();
@@ -104,7 +104,7 @@ namespace Esb.Tests.Transport
         [Test()]
         public void SingleServerMessageWithoutLocalProcessingShouldBeSentViaRoutingStrategy()
         {
-            var message = new Envelope(new TestMessage(), Priority.Normal);
+            var message = new Envelope(new TestMessage());
             var node1 = Mock.Create<INodeConfiguration>();
             Mock.Arrange(() => node1.Address).Returns(new Uri("http://ShouldNotCall"));
 
@@ -126,9 +126,9 @@ namespace Esb.Tests.Transport
         }
 
         [Test()]
-        public void ProcessSyncTest()
+        public void ProcessMessagesInSyncTest()
         {
-            throw new NotImplementedException();
+            Assert.Inconclusive();
         }
     }
 }

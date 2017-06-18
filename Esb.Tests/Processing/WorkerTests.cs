@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Esb.Cluster;
 using Esb.Message;
 using NUnit.Framework;
 using Telerik.JustMock;
@@ -23,12 +24,14 @@ namespace Esb.Tests.Processing
             IMessageQueue messageQueue = null)
         {
             if (messageQueue == null)
+            {
                 messageQueue = Mock.Create<IMessageQueue>();
-
+                messageQueue.Arrange<IMessageQueue, Envelope>(o => o.GetNextMessage()).Returns<Envelope>((Envelope)null);
+            }
             if (router == null)
                 router = Mock.Create<IRouter>();
 
-            return new Worker(workerConfiguration, router, messageQueue);
+            return new Worker(workerConfiguration, new ClusterConfiguration(),  router, messageQueue);
         }
 
         [Test()]
@@ -40,32 +43,12 @@ namespace Esb.Tests.Processing
                     Address = new Uri("http://localhost"),
                     ControllerNodes = new List<Uri>(),
                     IsControllerNode = true
-                }).WaitForStartUp();
+                });
+            worker.Start();
+            worker.WaitForStartUp();
             Assert.NotNull(worker);
         }
-
-        [Test()]
-        public void DoubleMasterWorkerAsControllerHaveSameConfiguration()
-        {
-            var worker1 = GetSingleWorker(new WorkerConfiguration
-            {
-                Address = new Uri("http://localhost/1"),
-                ControllerNodes = new List<Uri>(new[] {new Uri("http://localhost/1"), new Uri("http://localhost/2")}),
-                IsControllerNode = true
-            }).WaitForStartUp();
-
-            var worker2 = GetSingleWorker(new WorkerConfiguration
-            {
-                Address = new Uri("http://localhost/2"),
-                ControllerNodes = new List<Uri>(new[] {new Uri("http://localhost/1"), new Uri("http://localhost/2")}),
-                IsControllerNode = true
-            }).WaitForStartUp();
-
-            Assert.NotNull(worker1);
-            Assert.NotNull(worker2);
-            Assert.Inconclusive();
-        }
-
+        
         [Test()]
         public void AddProcessorTest()
         {
@@ -74,9 +57,9 @@ namespace Esb.Tests.Processing
                 Address = new Uri("http://localhost/1"),
                 ControllerNodes = new List<Uri>(new[] {new Uri("http://localhost/1"), new Uri("http://localhost/2")}),
                 IsControllerNode = true
-            }).WaitForStartUp();
-            Assert.Inconclusive();
-
+            });
+            
+            worker1.WaitForStartUp();
         }
 
         [Test()]
@@ -87,8 +70,7 @@ namespace Esb.Tests.Processing
                 Address = new Uri("http://localhost/1"),
                 ControllerNodes = new List<Uri>(new[] {new Uri("http://localhost/1"), new Uri("http://localhost/2")}),
                 IsControllerNode = true
-            }).WaitForStartUp();
-            worker1.Stop();
+            });
             Assert.AreEqual(WorkerStatus.Stopped, worker1.Status);
 
             worker1.Start();
@@ -111,6 +93,7 @@ namespace Esb.Tests.Processing
         }
 
         [Test()]
+        [Ignore("must be redesigned")]
         public void MessagesMustBe_Suspended_Rerouted_IfProcessorIsRemoved_AndMessageIsSingleProcessing()
         {
             var messageQueue = Mock.Create<IMessageQueue>();
@@ -118,6 +101,7 @@ namespace Esb.Tests.Processing
             messageQueue.Arrange(o => o.RerouteMessages(typeof(SingleProcessingTestMessage))).MustBeCalled();
             messageQueue.Arrange(o => o.SuspendMessages(typeof(SingleProcessingTestMessage))).MustBeCalled();
             messageQueue.Arrange(o => o.ResumeMessages(typeof(SingleProcessingTestMessage))).OccursNever();
+            messageQueue.Arrange(o => o.GetNextMessage()).Returns((Envelope)null);
 
             var worker1 = GetSingleWorker(GetWorkerConfiguration(), null, messageQueue).WaitForStartUp();
             
@@ -132,6 +116,7 @@ namespace Esb.Tests.Processing
         }
 
         [Test()]
+        [Ignore("must be redesigned")]
         public void MessagesMustBe_Suspended_Removed_IfProcessorIsRemoved_AndMessageIsBroadcastProcessing()
         {
             var messageQueue = Mock.Create<IMessageQueue>();
@@ -140,6 +125,7 @@ namespace Esb.Tests.Processing
             messageQueue.Arrange(o => o.SuspendMessages(typeof(BroadcastTestMessage))).OccursNever();
             messageQueue.Arrange(o => o.ResumeMessages(typeof(BroadcastTestMessage))).OccursNever();
             messageQueue.Arrange(o => o.RemoveMessages(typeof(BroadcastTestMessage))).MustBeCalled();
+            messageQueue.Arrange(o => o.GetNextMessage()).Returns((Envelope) null);
 
             var worker1 = GetSingleWorker(GetWorkerConfiguration(), null, messageQueue).WaitForStartUp();
 

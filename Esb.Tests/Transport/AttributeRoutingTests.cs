@@ -12,26 +12,26 @@ namespace Esb.Tests.Transport
         [Test()]
         public void MessageWith_ControllerMessageAttribute_MustBeSentToControllersOnly()
         {
-            throw new NotImplementedException();
+            Assert.Inconclusive();
         }
 
 
         [Test()]
         public void MessageWith_SingleProcessingMessageAttribute_MustBeSentToASingleNode()
         {
-            throw new NotImplementedException();
+            Assert.Inconclusive();
         }
 
         [Test()]
         public void MessageWith_BroadcastProcessingMessageAttribute_MustBeSentToAllNodes_WithProcessors()
         {
-            throw new NotImplementedException();
+            Assert.Inconclusive();
         }
 
         [Test()]
         public void MessageWith_BroadcastProcessingMessageAttribute_ShouldNotBeSentToNodes_WithoutProcessor()
         {
-            throw new NotImplementedException();
+            Assert.Inconclusive();
         }
     }
 }

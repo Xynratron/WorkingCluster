@@ -4,14 +4,17 @@ using System.Linq;
 
 namespace Esb.Cluster.Messages
 {
-    public class AddNodeToCluster
+    [ControllerMessage, SingleProcessingMessage]
+    public class AddNodeToClusterMessage
     {
-        public AddNodeToCluster(INodeConfiguration nodeToAdd)
+        public AddNodeToClusterMessage(INodeConfiguration nodeToAdd)
         {
             Address = nodeToAdd.Address;
             Processors = new List<Type>(nodeToAdd.Processors.Select(o => o.ProcessingType));
+            IsControllerNode = nodeToAdd.IsControllerNode;
         }
-        Uri Address { get; }
-        ICollection<Type> Processors { get; }
+        public Uri Address { get; }
+        public ICollection<Type> Processors { get; }
+        public bool IsControllerNode { get; }
     }
 }

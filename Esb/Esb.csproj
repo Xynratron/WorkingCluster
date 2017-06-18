@@ -30,6 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\NLog.4.4.6\lib\net40\NLog.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -42,7 +45,9 @@
     <Compile Include="Cluster\Messages\AddNodeToCluster.cs" />
     <Compile Include="Cluster\Messages\AskForClusterConfiguration.cs" />
     <Compile Include="Cluster\Messages\ClusterConfiguration.cs" />
-    <Compile Include="Cluster\Proccessors\AskForClusterConfiguration.cs" />
+    <Compile Include="Cluster\Messages\PingMessage.cs" />
+    <Compile Include="Cluster\Proccessors\BroadcastClusterConfigurationProcessor.cs" />
+    <Compile Include="Cluster\Proccessors\PingProcessor.cs" />
     <Compile Include="Cluster\Proccessors\SyncClusterConfiguration.cs" />
     <Compile Include="Message\BroadcastProcessingMessageAttribute.cs" />
     <Compile Include="Message\ControllerMessageAttribute.cs" />
@@ -59,6 +64,7 @@
     <Compile Include="Cluster\IClusterConfiguration.cs" />
     <Compile Include="Cluster\INodeConfiguration.cs" />
     <Compile Include="Processing\BaseProcessor.cs" />
+    <Compile Include="Processing\Environment.cs" />
     <Compile Include="Processing\IProcessor.cs" />
     <Compile Include="Processing\IProcessorConfiguration.cs" />
     <Compile Include="Message\Envelope.cs" />
@@ -67,6 +73,7 @@
     <Compile Include="Processing\IWorker.cs" />
     <Compile Include="Message\MessageQueue.cs" />
     <Compile Include="Cluster\NodeConfiguration.cs" />
+    <Compile Include="Processing\SyncMessageWorkFactory.cs" />
     <Compile Include="Processing\WorkerStatus.cs" />
     <Compile Include="Transport\INodeRoutingStrategy.cs" />
     <Compile Include="Transport\IReceiver.cs" />
@@ -83,6 +90,7 @@
     <None Include="Overview.dgml">
       <SubType>Designer</SubType>
     </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Notes.txt" />

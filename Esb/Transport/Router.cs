@@ -30,8 +30,8 @@ namespace Esb.Transport
 
         private bool ProcessMultiSeverMessage(Envelope message)
         {
-            var processingNodes = ClusterConfiguration.GetClusterNodesForMessage(message);
-            foreach (var node in ClusterConfiguration.GetClusterNodesForMessage(message))
+            var processingNodes = ClusterConfiguration.GetClusterNodesForMessage(message).ToList();
+            foreach (var node in processingNodes)
             {
                 if (node.IsLocal)
                     MessageQueue.Add(message);
@@ -74,7 +74,7 @@ namespace Esb.Transport
         public ISender Sender { get; }
         public INodeRoutingStrategy RoutingStrategy { get; }
         /// <summary>
-        /// We try  to process the message in Sync and return false if we got an Exception
+        /// We try  to send the message in Sync and return false if we got an Exception
         /// e.g. if the given node is not online
         /// </summary>
         /// <param name="message"></param>
@@ -82,7 +82,15 @@ namespace Esb.Transport
         /// <returns></returns>
         public bool ProcessSync(Envelope message, INodeConfiguration targetNode)
         {
-            throw new NotImplementedException();
+            try
+            {
+                Sender.Send(message, targetNode);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
         }
     }
 }
